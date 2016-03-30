@@ -84,7 +84,12 @@ public class UriDerefResultCache implements ServletContextListener {
 
     public static int get(String uri) {
         if (cache != null) {
-            cache.get()
+            if (!cache.containsKey(uri)) {
+                return -1;
+            } else {
+                return cache.get(uri);
+            }
+
         } else {
             throw new IllegalStateException("Cache is null ...");
         }

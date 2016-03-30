@@ -1,4 +1,4 @@
-package es.upm.oeg.tools.quality.ldsniffer.model;
+package es.upm.oeg.tools.quality.ldsniffer.vocab;
 
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
@@ -18,36 +18,5 @@ package es.upm.oeg.tools.quality.ldsniffer.model;
  * @author Nandana Mihindukulasooriya
  * @since 1.0.0
  */
-public class HttpResponse {
-
-    private final int statusCode;
-
-    private final String reason;
-
-    private final String uri;
-
-    private final String method;
-
-    public HttpResponse(String uri, String method, int statusCode, String reason) {
-        this.statusCode = statusCode;
-        this.reason = reason;
-        this.uri = uri;
-        this.method = method;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public String getMethod() {
-        return method;
-    }
+public class OM extends VocabBase {
 }

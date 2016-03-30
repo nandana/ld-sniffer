@@ -5,10 +5,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-public class LDQ {
-
-    /** <p>The RDF model that holds the vocabulary terms</p> */
-    private static Model m_model = ModelFactory.createDefaultModel();
+public class LDQ extends VocabBase {
 
     /** <p>The namespace of the vocabulary as a string</p> */
     public static final String NS = "http://www.linkeddata.es/ontology/ldq#";
@@ -50,6 +47,8 @@ public class LDQ {
     public static final Property until = m_model.createProperty( NS + "until" );
     public static final Property utilizes = m_model.createProperty( NS + "utilizes" );
     public static final Property validDuring = m_model.createProperty( NS + "validDuring" );
+    public static final Property isSubjective = m_model.createProperty( NS + "isSubjective" );
+    public static final Property isSystemDependent = m_model.createProperty( NS + "isSystemDependent" );
 
 
     //Named individuals
@@ -58,6 +57,7 @@ public class LDQ {
     public static final Resource Dataset = m_model.createResource( NS + "Dataset" );
     public static final Resource DomainData = m_model.createResource( NS + "DomainData" );
     public static final Resource FileServer = m_model.createResource( NS + "FileServer" );
+    public static final Resource LinkedDataServer = m_model.createResource( NS + "LinkedDataServer" );
     public static final Resource Graph = m_model.createResource( NS + "Graph" );
 
 }

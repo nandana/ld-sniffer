@@ -2,12 +2,10 @@ package es.upm.oeg.tools.quality.ldsniffer.vocab;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-public class DQV {
-
-    /** <p>The RDF model that holds the vocabulary terms</p> */
-    private static Model m_model = ModelFactory.createDefaultModel();
+public class DQV extends VocabBase {
 
     /** <p>The namespace of the vocabulary as a string</p> */
     public static final String NS = "http://www.w3.org/ns/dqv#";
@@ -42,6 +40,15 @@ public class DQV {
     public static final Resource UserQualityFeedback = m_model.createResource( NS + "UserQualityFeedback" );
 
     public static final Resource QualityCertificate = m_model.createResource( NS + "QualityCertificate" );
+
+
+    public static final Property computedOn = m_model.createProperty( NS + "computedOn" );
+    public static final Property value = m_model.createProperty( NS + "value" );
+    public static final Property isMeasurementOf = m_model.createProperty( NS + "isMeasurementOf" );
+    public static final Property inCategory = m_model.createProperty( NS + "inCategory" );
+    public static final Property inDimension = m_model.createProperty( NS + "inDimension" );
+    public static final Property expectedDataType = m_model.createProperty( NS + "expectedDataType" );
+
 
 
 }

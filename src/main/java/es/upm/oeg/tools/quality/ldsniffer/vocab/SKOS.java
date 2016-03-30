@@ -1,4 +1,6 @@
-package es.upm.oeg.tools.quality.ldsniffer.model;
+package es.upm.oeg.tools.quality.ldsniffer.vocab;
+
+import com.hp.hpl.jena.rdf.model.Property;
 
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
@@ -18,36 +20,20 @@ package es.upm.oeg.tools.quality.ldsniffer.model;
  * @author Nandana Mihindukulasooriya
  * @since 1.0.0
  */
-public class HttpResponse {
+public class SKOS extends VocabBase {
 
-    private final int statusCode;
+    /** <p>The namespace of the vocabulary as a string</p> */
+    public static final String NS = "http://www.w3.org/2004/02/skos/core#";
 
-    private final String reason;
+    public static final String PREFIX = "skos";
 
-    private final String uri;
+    /** <p>The namespace of the vocabulary as a string</p>
+     *  @see #NS */
+    public static String getURI() {return NS;}
 
-    private final String method;
+    public static final Property definition = m_model.createProperty( NS + "definition" );
+    public static final Property prefLabel = m_model.createProperty( NS + "prefLabel" );
 
-    public HttpResponse(String uri, String method, int statusCode, String reason) {
-        this.statusCode = statusCode;
-        this.reason = reason;
-        this.uri = uri;
-        this.method = method;
-    }
 
-    public int getStatusCode() {
-        return statusCode;
-    }
 
-    public String getReason() {
-        return reason;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public String getMethod() {
-        return method;
-    }
 }
