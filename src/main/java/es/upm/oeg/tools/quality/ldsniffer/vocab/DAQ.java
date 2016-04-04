@@ -37,6 +37,7 @@ public class DAQ extends VocabBase {
 
 
     public static final Resource Observation = m_model.createResource( NS + "Observation" );
+    public static final Resource Dimension = m_model.createResource( NS + "Dimension" );
 
     public static final Property isEstimate = m_model.createProperty( NS + "isEstimate" );
 

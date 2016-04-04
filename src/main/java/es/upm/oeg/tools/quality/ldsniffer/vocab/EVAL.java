@@ -38,11 +38,15 @@ public class EVAL extends VocabBase {
 
     public static final Resource Evaluation = m_model.createResource( NS + "Evaluation" );
     public static final Resource QualityValue = m_model.createResource( NS + "QualityValue" );
+    public static final Resource SubjectCategory = m_model.createResource( NS + "SubjectCategory" );
 
 
     public static final Property performedOn = m_model.createProperty( NS + "performedOn" );
     public static final Property obtainedFrom = m_model.createProperty( NS + "obtainedFrom" );
     public static final Property hasLiteralValue = m_model.createProperty( NS + "hasLiteralValue" );
+    public static final Property evaluatedSubject = m_model.createProperty( NS + "evaluatedSubject" );
+    public static final Property forMeasure = m_model.createProperty( NS + "forMeasure" );
+    public static final Property belongsToCategory = m_model.createProperty( NS + "belongsToCategory" );
 
 
 

@@ -46,6 +46,16 @@ public class QMO extends VocabBase {
 
 
     public static final Property hasScale = m_model.createProperty( NS + "hasScale" );
+    public static final Property measuresCharacteristic = m_model.createProperty( NS + "measuresCharacteristic" );
+    public static final Property isCharacteristicOf  = m_model.createProperty( NS + "isCharacteristicOf" );
+    public static final Property isMeasuredWith  = m_model.createProperty( NS + "isMeasuredWith" );
+    public static final Property hasUnitOfMeasurement  = m_model.createProperty( NS + "hasUnitOfMeasurement" );
+    public static final Property hasLowerBoundary  = m_model.createProperty( NS + "hasLowerBoundary" );
+    public static final Property hasUpperBoundary  = m_model.createProperty( NS + "hasUpperBoundary" );
+    public static final Property hasRankingFunction  = m_model.createProperty( NS + "hasRankingFunction" );
+
+    public static final Property Ranking_HigherBest  = m_model.createProperty( NS + "HigherBest" );
+    public static final Property Ranking_LowerBest  = m_model.createProperty( NS + "LowerBest" );
 
 
 }

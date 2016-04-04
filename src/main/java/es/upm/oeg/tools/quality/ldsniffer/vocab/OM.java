@@ -1,5 +1,7 @@
 package es.upm.oeg.tools.quality.ldsniffer.vocab;
 
+import com.hp.hpl.jena.rdf.model.Resource;
+
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
  * <p>
@@ -19,4 +21,21 @@ package es.upm.oeg.tools.quality.ldsniffer.vocab;
  * @since 1.0.0
  */
 public class OM extends VocabBase {
+
+    /** <p>The namespace of the vocabulary as a string</p> */
+    public static final String NS = "http://www.wurvoc.org/vocabularies/om-1.8/";
+
+    public static final String PREFIX = "om18";
+
+    /** <p>The namespace of the vocabulary as a string</p>
+     *  @see #NS */
+    public static String getURI() {return NS;}
+
+    /** <p>The namespace of the vocabulary as a resource</p> */
+    public static final Resource NAMESPACE = m_model.createResource( NS );
+
+    public static final Resource Ratio_scale = m_model.createResource( NS + "Ratio_scale" );
+
+
+
 }

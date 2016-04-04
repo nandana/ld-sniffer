@@ -5,10 +5,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.vocabulary.DC;
-import com.hp.hpl.jena.vocabulary.DC_11;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.XSD;
+import com.hp.hpl.jena.vocabulary.*;
 import es.upm.oeg.tools.quality.ldsniffer.vocab.*;
 
 import java.io.ByteArrayOutputStream;
@@ -176,14 +173,22 @@ public class AssessmentResult {
         model.setNsPrefix(PROV.PREFIX, PROV.NS);
         model.setNsPrefix(QPRO.PREFIX, QPRO.NS);
         model.setNsPrefix(HTTP.PREFIX, HTTP.NS);
+        model.setNsPrefix(OM.PREFIX, OM.NS);
         model.setNsPrefix("rdf", RDF.getURI());
         model.setNsPrefix("dc", DC_11.getURI());
         model.setNsPrefix("xsd", XSD.getURI());
+        model.setNsPrefix("owl", OWL.getURI());
+        model.setNsPrefix("dqm", "http://www.diachron-fp7.eu/dqm#");
         model.setNsPrefix("derivedmeasure", "http://linkeddata.es/resource/ldqm/DerivedMeasure/");
         model.setNsPrefix("basemeasure", "http://linkeddata.es/resource/ldqm/BaseMeasure/");
         model.setNsPrefix("indicator", "http://linkeddata.es/resource/ldqm/QualityIndicator/");
+        model.setNsPrefix("category", "http://linkeddata.es/resource/ldqm/SubjectCategory/");
         model.setNsPrefix("defect", "http://linkeddata.es/resource/ldqm/Defect/");
         model.setNsPrefix("scale", "http://linkeddata.es/resource/ldqm/Scale/");
+
+
+        Resource evaluationSubject = model.createResource(subject);
+        evaluationSubject.addProperty(DC.title, "Evaluation subject, the Linked Data resource '" + subject + "'.");
 
         Resource assessmentTechnique = model.createResource();
         assessmentTechnique.addProperty(RDF.type, LDQ.AssessmentTechnique);
@@ -205,20 +210,45 @@ public class AssessmentResult {
             }
         };
 
-
         Resource evaluation = model.createResource();
         evaluation.addProperty(RDF.type, EVAL.Evaluation);
         evaluation.addProperty(RDF.type, PROV.Activity);
         evaluation.addLiteral(EVAL.performedOn, ResourceFactory.createTypedLiteral( df.format(new Date()), XSDDatatype.XSDdateTime));
+        evaluation.addLiteral(EVAL.evaluatedSubject, evaluationSubject);
         evaluation.addProperty(LDQ.utilizes, uriCountAssessmentTechnique);
         evaluation.addProperty(LDQ.utilizes, assessmentTechnique);
 
+        Resource ratioScale_0_100 = model.createResource();
+        ratioScale_0_100.addProperty(RDF.type, OM.Ratio_scale);
+        ratioScale_0_100.addLiteral(QMO.hasLowerBoundary, 0);
+        ratioScale_0_100.addLiteral(QMO.hasUpperBoundary, 100);
+        ratioScale_0_100.addLiteral(QMO.hasRankingFunction, QMO.Ranking_HigherBest);
+
+        Resource ratioScale_0 = model.createResource();
+        ratioScale_0_100.addProperty(RDF.type, OM.Ratio_scale);
+        ratioScale_0_100.addLiteral(QMO.hasLowerBoundary, 0);
+        ratioScale_0_100.addLiteral(QMO.hasRankingFunction, QMO.Ranking_HigherBest);
+
+        Resource availabilityDimension = model.createResource(LDQM.Dimension_Availability.getURI());
+        availabilityDimension.addProperty(RDF.type, QMO.QualityCharacteristic);
+        availabilityDimension.addProperty(RDF.type, DQV.Dimension);
+        availabilityDimension.addProperty(RDF.type, DAQ.Dimension);
+        availabilityDimension.addProperty(DC.title, "Availability dimension / characteristic.");
+        availabilityDimension.addProperty(SKOS.prefLabel, "Availability dimension / characteristic.");
+        availabilityDimension.addProperty(SKOS.definition, "Availability of a dataset is the extent to which data (or some portion of it) is present, obtainable and ready for use.");
+        availabilityDimension.addProperty(OWL.sameAs, model.createResource("http://www.diachron-fp7.eu/dqm#Availability"));
+
+
+        Resource subjectCategory = model.createResource("http://linkeddata.es/resource/ldqm/SubjectCategory/LinkedDataResource");
+        subjectCategory.addProperty(RDF.type, EVAL.SubjectCategory);
+        availabilityDimension.addProperty(QMO.isCharacteristicOf, subjectCategory);
+        evaluationSubject.addProperty(EVAL.belongsToCategory, subjectCategory);
 
         Resource subjectsMetric = model.createResource(LDQM.Numberofdistinctsubjects.getURI());
         subjectsMetric.addProperty(RDF.type, QMO.BaseMeasure);
         subjectsMetric.addProperty(RDF.type, QMO.QualityMeasure);
         subjectsMetric.addProperty(RDF.type, DQV.Metric);
-        subjectsMetric.addProperty(QMO.hasScale, LDQM.Scale_Interval);
+        subjectsMetric.addProperty(QMO.hasScale, ratioScale_0);
         subjectsMetric.addProperty(LDQ.hasGranularity, LDQ.Graph);
         subjectsMetric.addProperty(LDQ.hasGranularity, LDQ.Dataset);
         subjectsMetric.addProperty(DC.title, "Number of distinct subjects");
@@ -239,13 +269,14 @@ public class AssessmentResult {
         numberOfSubjectsMeasure.addLiteral(DAQ.isEstimate, false);
         numberOfSubjectsMeasure.addLiteral(DQV.value, numberOfSubjects);
         numberOfSubjectsMeasure.addLiteral(EVAL.hasLiteralValue, numberOfSubjects);
+        numberOfSubjectsMeasure.addProperty(EVAL.forMeasure, subjectsMetric);
 
 
         Resource derefSubjectsMetric = model.createResource(LDQM.Numberofdereferenceablesubjects.getURI());
         derefSubjectsMetric.addProperty(RDF.type, QMO.DerivedMeasure);
         derefSubjectsMetric.addProperty(RDF.type, QMO.QualityMeasure);
         derefSubjectsMetric.addProperty(RDF.type, DQV.Metric);
-        derefSubjectsMetric.addProperty(QMO.hasScale, LDQM.Scale_Interval);
+        derefSubjectsMetric.addProperty(QMO.hasScale, ratioScale_0);
         derefSubjectsMetric.addProperty(LDQ.hasGranularity, LDQ.Graph);
         derefSubjectsMetric.addProperty(LDQ.hasGranularity, LDQ.Dataset);
         derefSubjectsMetric.addProperty(DC.title, "Number of dereferenceable subjects");
@@ -266,24 +297,30 @@ public class AssessmentResult {
         numberOfDerefSubjects.addLiteral(DAQ.isEstimate, false);
         numberOfDerefSubjects.addLiteral(DQV.value, numberOfDereferenceableSubjects);
         numberOfDerefSubjects.addLiteral(EVAL.hasLiteralValue, numberOfDereferenceableSubjects);
+        numberOfDerefSubjects.addProperty(EVAL.forMeasure, derefSubjectsMetric);
 
 
         Resource avgDerefSubjectsMetric = model.createResource(LDQM.AverageSubjectdereferenceability.getURI());
         avgDerefSubjectsMetric.addProperty(RDF.type, QMO.QualityIndicator);
         avgDerefSubjectsMetric.addProperty(RDF.type, QMO.QualityMeasure);
         avgDerefSubjectsMetric.addProperty(RDF.type, DQV.Metric);
-        avgDerefSubjectsMetric.addProperty(QMO.hasScale, LDQM.Scale_Ratio);
+        avgDerefSubjectsMetric.addProperty(QMO.hasScale, ratioScale_0_100);
         avgDerefSubjectsMetric.addProperty(LDQ.hasGranularity, LDQ.Graph);
         avgDerefSubjectsMetric.addProperty(LDQ.hasGranularity, LDQ.Dataset);
         avgDerefSubjectsMetric.addProperty(LDQ.hasAspect, LDQ.LinkedDataServer);
         avgDerefSubjectsMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdereferenceablesubjects);
         avgDerefSubjectsMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdistinctsubjects);
-        avgDerefSubjectsMetric.addProperty(DQV.inDimension, LDQM.Dimension_Accessibility);
+        avgDerefSubjectsMetric.addProperty(DQV.inDimension, LDQM.Dimension_Availability);
+        avgDerefSubjectsMetric.addProperty(QMO.measuresCharacteristic, LDQM.Dimension_Availability);
+        //avgDerefSubjectsMetric.addProperty(QMO.hasUnitOfMeasurement, model.createResource("http://this.we.have.to.decided.com/test2"));
         avgDerefSubjectsMetric.addProperty(DC.title, "Average subject dereferenceability");
         avgDerefSubjectsMetric.addLiteral(SKOS.prefLabel, model.createLiteral("Average subject dereferenceability", "en"));
         avgDerefSubjectsMetric.addProperty(DC.description, "Average number of dereferenceable subjects in a triple, dataset, or a graph.");
         avgDerefSubjectsMetric.addProperty(SKOS.definition, "(Number of dereferenceable subjects / Number of distinct subjects) * 100 %");
         avgDerefSubjectsMetric.addProperty(DQV.expectedDataType, XSD.xdouble);
+
+
+        availabilityDimension.addProperty(QMO.isMeasuredWith, avgDerefSubjectsMetric);
 
 
         Resource avgDerefSubjects = model.createResource();
@@ -300,6 +337,7 @@ public class AssessmentResult {
 
         avgDerefSubjects.addLiteral(DQV.value, avgSubjectDereferenceablility);
         avgDerefSubjects.addLiteral(EVAL.hasLiteralValue, avgSubjectDereferenceablility);
+        avgDerefSubjects.addProperty(EVAL.forMeasure, avgDerefSubjectsMetric);
 
         Resource qualityReport = model.createResource(QPRO.QualityReport);
         qualityReport.addProperty(QPRO.computedOn, ResourceFactory.createTypedLiteral( df.format(new Date()), XSDDatatype.XSDdateTime));

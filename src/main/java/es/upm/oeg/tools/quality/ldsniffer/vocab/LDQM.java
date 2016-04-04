@@ -34,6 +34,8 @@ public class LDQM extends VocabBase {
 
     public static final Resource Dimension_Accessibility = m_model.createResource( "http://linkeddata.es/resource/ldqm/Dimension/Accessibility" );
 
+    public static final Resource Dimension_Availability = m_model.createResource( "http://linkeddata.es/resource/ldqm/Dimension/Availability" );
+
     public static final Resource Defect_UndereferenceableURI = m_model.createResource("http://linkeddata.es/resource/ldqm/Defect/UndereferenceableURI");
 
 
