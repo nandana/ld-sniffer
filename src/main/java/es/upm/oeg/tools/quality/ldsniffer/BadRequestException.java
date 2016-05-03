@@ -1,7 +1,7 @@
 package es.upm.oeg.tools.quality.ldsniffer;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @since 1.0.0
  */
 
-@ResponseStatus(value= HttpStatus.BAD_REQUEST)
+//@ResponseStatus(value= HttpStatus.BAD_REQUEST)
 public class BadRequestException extends RuntimeException {
 
     public BadRequestException(String message){

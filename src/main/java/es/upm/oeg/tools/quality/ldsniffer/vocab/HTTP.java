@@ -35,8 +35,14 @@ public class HTTP extends VocabBase {
     /** <p>The namespace of the vocabulary as a resource</p> */
     public static final Resource NAMESPACE = m_model.createResource( NS );
 
+    public static final Resource Response = m_model.createResource( NS + "Response" );
+    public static final Resource Request = m_model.createResource( NS + "Request" );
+
     public static final Property statusCodeValue = m_model.createProperty( NS + "statusCodeValue" );
     public static final Property methodName = m_model.createProperty( NS + "methodName" );
+    public static final Property reasonPhrase = m_model.createProperty( NS + "reasonPhrase" );
+    public static final Property resp = m_model.createProperty( NS + "resp" );
+    public static final Property httpVersion = m_model.createProperty( NS + "httpVersion" );
 
 
 }

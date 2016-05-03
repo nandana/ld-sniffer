@@ -1,9 +1,9 @@
 package es.upm.oeg.tools.quality.ldsniffer;
 
-import es.upm.oeg.tools.quality.ldsniffer.cache.UriDerefResultCache;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+//import es.upm.oeg.tools.quality.ldsniffer.cache.UriDerefResultCache;
+//import org.springframework.boot.SpringApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.context.annotation.Bean;
 
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
@@ -24,16 +24,16 @@ import org.springframework.context.annotation.Bean;
  * @since 1.0.0
  */
 
-@SpringBootApplication
+//@SpringBootApplication
 public class LdSnifferConfiguration {
 
     public static void main(String[] args) {
-        SpringApplication.run(LdSnifferConfiguration.class, args);
+//        SpringApplication.run(LdSnifferConfiguration.class, args);
     }
 
-    @Bean
-    public UriDerefResultCache uriDerefResultCache() {
-        return new UriDerefResultCache();
-    }
+//    @Bean
+//    public UriDerefResultCache uriDerefResultCache() {
+//        return new UriDerefResultCache();
+//    }
 
 }

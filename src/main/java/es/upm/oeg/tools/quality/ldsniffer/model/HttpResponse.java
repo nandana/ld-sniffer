@@ -1,5 +1,8 @@
 package es.upm.oeg.tools.quality.ldsniffer.model;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
  * <p>
@@ -18,7 +21,7 @@ package es.upm.oeg.tools.quality.ldsniffer.model;
  * @author Nandana Mihindukulasooriya
  * @since 1.0.0
  */
-public class HttpResponse {
+public class HttpResponse implements Serializable {
 
     private final int statusCode;
 
@@ -28,11 +31,17 @@ public class HttpResponse {
 
     private final String method;
 
-    public HttpResponse(String uri, String method, int statusCode, String reason) {
+    private final boolean cached;
+
+    private final Date date;
+
+    public HttpResponse(String uri, String method, int statusCode, String reason, Date date, boolean cached) {
         this.statusCode = statusCode;
         this.reason = reason;
         this.uri = uri;
         this.method = method;
+        this.date = date;
+        this.cached = cached;
     }
 
     public int getStatusCode() {
@@ -49,5 +58,13 @@ public class HttpResponse {
 
     public String getMethod() {
         return method;
+    }
+
+    public boolean isCached() {
+        return cached;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

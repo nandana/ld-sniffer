@@ -54,10 +54,12 @@ public class LDQ extends VocabBase {
     //Named individuals
 
     public static final Resource Automatic = m_model.createResource( NS + "Automatic" );
-    public static final Resource Dataset = m_model.createResource( NS + "Dataset" );
     public static final Resource DomainData = m_model.createResource( NS + "DomainData" );
     public static final Resource FileServer = m_model.createResource( NS + "FileServer" );
     public static final Resource LinkedDataServer = m_model.createResource( NS + "LinkedDataServer" );
+    public static final Resource Iri = m_model.createResource( NS + "Iri" );
+    public static final Resource Triple = m_model.createResource( NS + "Triple" );
     public static final Resource Graph = m_model.createResource( NS + "Graph" );
+    public static final Resource Dataset = m_model.createResource( NS + "Dataset" );
 
 }

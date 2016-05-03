@@ -40,6 +40,8 @@ public class PROV extends VocabBase {
 
     public static final Property wasGeneratedBy = m_model.createProperty( NS + "wasGeneratedBy" );
     public static final Property wasDerivedFrom = m_model.createProperty( NS + "wasDerivedFrom" );
+    public static final Property startedAtTime = m_model.createProperty( NS + "startedAtTime" );
+    public static final Property endedAtTime = m_model.createProperty( NS + "endedAtTime" );
 
 
 }

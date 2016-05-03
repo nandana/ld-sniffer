@@ -1,7 +1,6 @@
-package es.upm.oeg.tools.quality.ldsniffer;
+package es.upm.oeg.tools.quality.ldsniffer.vocab;
 
-//import org.springframework.http.HttpStatus;
-//import org.springframework.web.bind.annotation.ResponseStatus;
+import com.hp.hpl.jena.rdf.model.Property;
 
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
@@ -21,15 +20,12 @@ package es.upm.oeg.tools.quality.ldsniffer;
  * @author Nandana Mihindukulasooriya
  * @since 1.0.0
  */
-//@ResponseStatus(value= HttpStatus.INTERNAL_SERVER_ERROR)
-public class ServerError extends RuntimeException {
+public class URI4URI extends VocabBase {
 
-    public ServerError(String msg) {
-        super(msg);
-    }
+    /** <p>The namespace of the vocabulary as a string</p> */
+    public static final String NS = "http://uri4uri.net/vocab#";
 
-    public ServerError(String msg, Throwable e) {
-        super(msg, e);
-    }
+    public static final String PREFIX = "uri4uri";
 
+    public static final Property host = m_model.createProperty( NS + "host" );
 }

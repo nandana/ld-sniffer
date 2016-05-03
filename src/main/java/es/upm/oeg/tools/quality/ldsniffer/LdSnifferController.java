@@ -5,19 +5,24 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import es.upm.oeg.tools.quality.ldsniffer.model.AssessmentResult;
 import es.upm.oeg.tools.quality.ldsniffer.model.HttpResponse;
 import es.upm.oeg.tools.quality.ldsniffer.query.QueryUtils;
+import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMethod;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.List;
+import java.net.ConnectException;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -43,104 +48,120 @@ import static es.upm.oeg.tools.quality.ldsniffer.query.QueryCollection.*;
  * @author Nandana Mihindukulasooriya
  * @since 1.0.0
  */
-@Controller
-@RequestMapping("/assess")
+//@Controller
+//@RequestMapping("/assess")
 public class LdSnifferController {
 
-    @RequestMapping(method= RequestMethod.GET)
-    public @ResponseBody AssessmentResult assess(@RequestParam(value="uri", required=true) String uri) {
-
-
-        final AssessmentResult assessmentResult = new AssessmentResult(uri);
-
-
-        Model model = ModelFactory.createDefaultModel();
-        //TODO try to limit the size of the file being loaded
-        try {
-            model.read(uri);
-        } catch (Exception e) {
-            throw new BadRequestException(String.format("Unable to read the content from the uri - %s \n(%s)", uri, e.getMessage()), e);
-        }
-
-        final int totalTriples = QueryUtils.getCountAsC(model, TOTAL_TRIPLES);
-        final int distinctIriSubjects = QueryUtils.getCountAsC(model, DISTINCT_IRI_SUBJECT_COUNT);
-        final int distinctIriPredicates = QueryUtils.getCountAsC(model, DISTINCT_IRI_PREDICATES_COUNT);
-        final int distinctIriObjects = QueryUtils.getCountAsC(model, DISTINCT_IRI_OBJECT_COUNT);
-
-        assessmentResult.setNumberOfSubjects(distinctIriSubjects);
-
-        final List<String> iriSubjects = QueryUtils.getIriList(model, DISTINCT_IRI_SUBJECTS);
-        final List<String> iriPredicates = QueryUtils.getIriList(model, DISTINCT_IRI_PREDICATES);
-        final List<String> iriObjects = QueryUtils.getIriList(model, DISTINCT_IRI_OBJECTS);
-
-        final ExecutorService executor = Executors.newFixedThreadPool(5);
-
-        final AtomicInteger derefSubjectCount = new AtomicInteger(0);
-        iriSubjects.forEach(subject -> {
-                executor.submit( () -> {
-                    CloseableHttpClient httpclient = HttpClients.createDefault();
-                    HttpHead head = new HttpHead(subject);
-                    try (CloseableHttpResponse response = httpclient.execute(head);) {
-                        StatusLine statusLine = response.getStatusLine();
-                        final int statusCode = statusLine.getStatusCode();
-                        if (statusCode >= 200 && statusCode < 300) {
-                            derefSubjectCount.incrementAndGet();
-                        } else {
-                            assessmentResult.addErrSubject(new HttpResponse(subject, "HEAD", statusLine.getStatusCode(), statusLine.getReasonPhrase()));
-                        }
-                    } catch (IOException e) {
-                        //TODO handle exception properly
-                        throw new RuntimeException(e);
-                    }
-                });
-        });
-
-        iriPredicates.forEach(predicate -> {
-
-            executor.submit( () -> {
-                CloseableHttpClient httpclient = HttpClients.createDefault();
-                HttpHead head = new HttpHead(predicate);
-                try (CloseableHttpResponse response = httpclient.execute(head);) {
-                    final int statusCode = response.getStatusLine().getStatusCode();
-
-                } catch (IOException e) {
-                    //TODO handle exception properly
-                    throw new RuntimeException(e);
-                }
-
-            });
-        });
-
-
-        iriObjects.forEach(object -> {
-
-            executor.submit( () -> {
-                CloseableHttpClient httpclient = HttpClients.createDefault();
-                HttpHead head = new HttpHead(object);
-                try (CloseableHttpResponse response = httpclient.execute(head);) {
-                    final int statusCode = response.getStatusLine().getStatusCode();
-
-                } catch (IOException e) {
-                    //TODO handle exception properly
-                    throw new RuntimeException(e);
-                }
-
-            });
-        });
-
-        executor.shutdown();
-        try {
-            executor.awaitTermination(5, TimeUnit.MINUTES);
-        } catch (InterruptedException e) {
-            throw new ServerError("Interrupted ...");
-        }
-
-        assessmentResult.setNumberOfDereferenceableSubjects(derefSubjectCount.get());
-
-        String rdf = assessmentResult.toRDF();
-        System.out.println(rdf);
-
-        return assessmentResult;
-    }
+//    private static final Logger logger = LoggerFactory.getLogger(LdSnifferController.class);
+//
+//    @RequestMapping(method= RequestMethod.GET)
+//    public @ResponseBody AssessmentResult assess(@RequestParam(value="uri", required=true) String uri) {
+//
+//
+//        final AssessmentResult assessmentResult = new AssessmentResult(uri);
+//
+//
+//        Model model = ModelFactory.createDefaultModel();
+//        //TODO try to limit the size of the file being loaded
+//        try {
+//            model.read(uri);
+//        } catch (Exception e) {
+//            throw new BadRequestException(String.format("Unable to read the content from the uri - %s \n(%s)", uri, e.getMessage()), e);
+//        }
+//
+//        final int totalTriples = QueryUtils.getCountAsC(model, TOTAL_TRIPLES);
+//        System.out.println("URI:" + uri);
+//        System.out.println("Total triples: " + totalTriples);
+//
+//        final List<String> iriSubjects = QueryUtils.getIriList(model, DISTINCT_IRI_SUBJECTS);
+//        final List<String> iriPredicates = QueryUtils.getIriList(model, DISTINCT_IRI_PREDICATES);
+//        final List<String> iriObjects = QueryUtils.getIriList(model, DISTINCT_IRI_OBJECTS);
+//
+//        final Set<String> iriSet = new HashSet<>();
+//        iriSet.addAll(iriSubjects);
+//        iriSet.addAll(iriPredicates);
+//        iriSet.addAll(iriObjects);
+//
+//        System.out.println("Distinct IRIs: " + iriSet.size());
+//        System.out.println("Distinct Subject IRIs: " + iriSubjects.size());
+//        System.out.println("Distinct Predicate IRIs:" + iriPredicates.size());
+//        System.out.println("Distinct Object IRIs:" + iriObjects.size());
+//
+//        final Map<String, HttpResponse> responseMap = new HashMap<>();
+//
+//        final ExecutorService executor = Executors.newFixedThreadPool(5);
+//
+//        AtomicInteger derefIriCount = new AtomicInteger(0);
+//        iriSet.forEach(iri -> {
+//                executor.submit( () -> {
+//                    CloseableHttpClient httpclient = HttpClients.createDefault();
+//                    HttpHead head = new HttpHead(iri);
+//                    String method = "HEAD";
+//
+//                    try (CloseableHttpResponse response = httpclient.execute(head);) {
+//                        StatusLine statusLine = response.getStatusLine();
+//                        int statusCode = statusLine.getStatusCode();
+//                        if (statusCode == HttpStatus.SC_METHOD_NOT_ALLOWED ||
+//                                statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+//                            HttpGet get = new HttpGet(iri);
+//                            method = "GET";
+//                            try (CloseableHttpResponse getResponse = httpclient.execute(get);) {
+//                                statusLine = getResponse.getStatusLine();
+//                                statusCode = statusLine.getStatusCode();
+//                            }
+//                        }
+//                        responseMap.put(iri, new HttpResponse(iri, method, statusCode,statusLine.getReasonPhrase(), false));
+//                        if(statusCode >= 200 && statusCode < 300){
+//                            derefIriCount.getAndIncrement();
+//                        }
+//
+//                    } catch (ConnectException e) {
+//                        logger.error("Connection timed out ...", e);
+//                        responseMap.put(iri, new HttpResponse(iri, method, -1, e.getMessage(), false));
+//                    } catch (IOException e) {
+//                        logger.error("IO error occurred ..", e);
+//                        responseMap.put(iri, new HttpResponse(iri, method, -1, e.getMessage(), false));
+//                    }
+//                });
+//        });
+//
+//        executor.shutdown();
+//        try {
+//            executor.awaitTermination(5, TimeUnit.MINUTES);
+//        } catch (InterruptedException e) {
+//            throw new ServerError("Interrupted ...");
+//        }
+//
+//        final AtomicInteger derefIriSubjectCount =  new AtomicInteger(0);
+//        iriSubjects.forEach(subject -> {
+//            HttpResponse response = responseMap.get(subject);
+//            if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+//                derefIriSubjectCount.getAndIncrement();
+//            }
+//        });
+//
+//        final AtomicInteger derefIriPredicateCount =  new AtomicInteger(0);
+//        iriPredicates.forEach(predicate -> {
+//            HttpResponse response = responseMap.get(predicate);
+//            if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+//                derefIriPredicateCount.getAndIncrement();
+//            }
+//        });
+//
+//        final AtomicInteger derefIriObjectCount =  new AtomicInteger(0);
+//        iriPredicates.forEach(object-> {
+//            HttpResponse response = responseMap.get(object);
+//            if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+//                derefIriObjectCount.getAndIncrement();
+//            }
+//        });
+//
+//        System.out.println("Deref. IRIs: " + derefIriCount.get());
+//        System.out.println("Deref. Subject IRIs: " + derefIriSubjectCount.get());
+//        System.out.println("Deref. Predicate IRIs:" + derefIriPredicateCount.get());
+//        System.out.println("Deref. Object IRIs:" + derefIriObjectCount.get());
+//
+//        return assessmentResult;
+//    }
 
 }

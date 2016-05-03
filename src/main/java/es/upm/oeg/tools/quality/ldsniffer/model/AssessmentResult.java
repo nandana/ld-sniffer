@@ -12,10 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
@@ -179,12 +176,16 @@ public class AssessmentResult {
         model.setNsPrefix("xsd", XSD.getURI());
         model.setNsPrefix("owl", OWL.getURI());
         model.setNsPrefix("dqm", "http://www.diachron-fp7.eu/dqm#");
+        model.setNsPrefix("dbr", "http://dbpedia.org/resource/");
         model.setNsPrefix("derivedmeasure", "http://linkeddata.es/resource/ldqm/DerivedMeasure/");
         model.setNsPrefix("basemeasure", "http://linkeddata.es/resource/ldqm/BaseMeasure/");
         model.setNsPrefix("indicator", "http://linkeddata.es/resource/ldqm/QualityIndicator/");
         model.setNsPrefix("category", "http://linkeddata.es/resource/ldqm/SubjectCategory/");
+        model.setNsPrefix("dimension", "http://linkeddata.es/resource/ldqm/Dimension/");
         model.setNsPrefix("defect", "http://linkeddata.es/resource/ldqm/Defect/");
         model.setNsPrefix("scale", "http://linkeddata.es/resource/ldqm/Scale/");
+        model.setNsPrefix("measure", "http://linkeddata.es/resource/measure/");
+        model.setNsPrefix("evaluation", "http://linkeddata.es/resource/evaluation/");
 
 
         Resource evaluationSubject = model.createResource(subject);
@@ -210,7 +211,9 @@ public class AssessmentResult {
             }
         };
 
-        Resource evaluation = model.createResource();
+        String uuid = UUID.randomUUID().toString();
+
+        Resource evaluation = model.createResource("http://linkeddata.es/resource/evaluation/" + uuid);
         evaluation.addProperty(RDF.type, EVAL.Evaluation);
         evaluation.addProperty(RDF.type, PROV.Activity);
         evaluation.addLiteral(EVAL.performedOn, ResourceFactory.createTypedLiteral( df.format(new Date()), XSDDatatype.XSDdateTime));
@@ -222,12 +225,12 @@ public class AssessmentResult {
         ratioScale_0_100.addProperty(RDF.type, OM.Ratio_scale);
         ratioScale_0_100.addLiteral(QMO.hasLowerBoundary, 0);
         ratioScale_0_100.addLiteral(QMO.hasUpperBoundary, 100);
-        ratioScale_0_100.addLiteral(QMO.hasRankingFunction, QMO.Ranking_HigherBest);
+        ratioScale_0_100.addProperty(QMO.hasRankingFunction, QMO.Ranking_HigherBest);
 
         Resource ratioScale_0 = model.createResource();
         ratioScale_0_100.addProperty(RDF.type, OM.Ratio_scale);
         ratioScale_0_100.addLiteral(QMO.hasLowerBoundary, 0);
-        ratioScale_0_100.addLiteral(QMO.hasRankingFunction, QMO.Ranking_HigherBest);
+        ratioScale_0_100.addProperty(QMO.hasRankingFunction, QMO.Ranking_HigherBest);
 
         Resource availabilityDimension = model.createResource(LDQM.Dimension_Availability.getURI());
         availabilityDimension.addProperty(RDF.type, QMO.QualityCharacteristic);
@@ -258,7 +261,8 @@ public class AssessmentResult {
         subjectsMetric.addProperty(DQV.expectedDataType, XSD.positiveInteger);
         subjectsMetric.addProperty(LDQ.calculatedWith, uriCountAssessmentTechnique);
 
-        Resource numberOfSubjectsMeasure = model.createResource();
+        uuid = UUID.randomUUID().toString();
+        Resource numberOfSubjectsMeasure = model.createResource("http://linkeddata.es/resource/measure/" + uuid);
         numberOfSubjectsMeasure.addProperty(RDF.type, DQV.QualityMeasurement);
         numberOfSubjectsMeasure.addProperty(RDF.type, DAQ.Observation);
         numberOfSubjectsMeasure.addProperty(RDF.type, EVAL.QualityValue);
@@ -286,7 +290,8 @@ public class AssessmentResult {
         derefSubjectsMetric.addProperty(DQV.expectedDataType, XSD.positiveInteger);
         derefSubjectsMetric.addProperty(LDQ.calculatedWith, assessmentTechnique);
 
-        Resource numberOfDerefSubjects = model.createResource();
+        uuid = UUID.randomUUID().toString();
+        Resource numberOfDerefSubjects = model.createResource("http://linkeddata.es/resource/measure/" + uuid);
         numberOfDerefSubjects.addProperty(RDF.type, DQV.QualityMeasurement);
         numberOfDerefSubjects.addProperty(RDF.type, DAQ.Observation);
         numberOfDerefSubjects.addProperty(RDF.type, EVAL.QualityValue);
@@ -300,7 +305,7 @@ public class AssessmentResult {
         numberOfDerefSubjects.addProperty(EVAL.forMeasure, derefSubjectsMetric);
 
 
-        Resource avgDerefSubjectsMetric = model.createResource(LDQM.AverageSubjectdereferenceability.getURI());
+        Resource avgDerefSubjectsMetric = model.createResource(LDQM.Averagesubjectdereferenceability.getURI());
         avgDerefSubjectsMetric.addProperty(RDF.type, QMO.QualityIndicator);
         avgDerefSubjectsMetric.addProperty(RDF.type, QMO.QualityMeasure);
         avgDerefSubjectsMetric.addProperty(RDF.type, DQV.Metric);
@@ -322,8 +327,8 @@ public class AssessmentResult {
 
         availabilityDimension.addProperty(QMO.isMeasuredWith, avgDerefSubjectsMetric);
 
-
-        Resource avgDerefSubjects = model.createResource();
+        uuid = UUID.randomUUID().toString();
+        Resource avgDerefSubjects = model.createResource("http://linkeddata.es/resource/measure/" + uuid);
         avgDerefSubjects.addProperty(RDF.type, DQV.QualityMeasurement);
         avgDerefSubjects.addProperty(RDF.type, DAQ.Observation);
         avgDerefSubjects.addProperty(RDF.type, EVAL.QualityValue);
