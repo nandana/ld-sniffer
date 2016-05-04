@@ -1,6 +1,6 @@
 Linked Data Sniffer
 ===================
-[![License](https://img.shields.io/github/nandana/ld-sniffer/ld-sniffer.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/nandana/ld-sniffer/master/LICENSE)
 
 Linked Data Sniffer is a command line tool for assessing the accessibility of Linked Data resources according to
 the [metrics defined](http://delicias.dia.fi.upm.es/LDQM/index.php/Accessibility) in the
