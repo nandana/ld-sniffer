@@ -50,7 +50,33 @@ public class Executor {
 
     private static final Logger logger = LoggerFactory.getLogger(Executor.class);
 
-    public Executor(String directory, String urlListPath, String resultsPath) throws IOException {
+    private String tdbDirectory;
+
+    private String urlListPath;
+
+    public Executor(String tdbDirectory, String urlListPath) throws IOException {
+
+        this.tdbDirectory = tdbDirectory;
+        this.urlListPath = urlListPath;
+
+
+//        new Evaluation("http://dbpedia.org/resource/Galle", dataset).process();
+
+//        FileWriter writer = new FileWriter(resultsPath);
+//        dataset.begin(ReadWrite.READ) ;
+//            Model model = dataset.getDefaultModel() ;
+//            final int totalTriples = QueryUtils.getCountAsC(model, TOTAL_TRIPLES);
+//            System.out.println("Totoal triples :" + totalTriples);
+//
+//            model.write(writer, "TURTLE");
+//            writer.flush();
+//            writer.close();
+//        dataset.end();
+
+    }
+
+
+    public void execute() throws IOException {
 
         List<String> urlList = Files.
                 readAllLines(Paths.get(urlListPath),
@@ -65,7 +91,7 @@ public class Executor {
 
         cache = cacheManager.getCache("uriCache", String.class, HttpResponse.class);
 
-        Dataset dataset = TDBFactory.createDataset(directory) ;
+        Dataset dataset = TDBFactory.createDataset(tdbDirectory) ;
         dataset.begin(ReadWrite.WRITE) ;
         try {
             Model model = dataset.getDefaultModel();
@@ -90,21 +116,9 @@ public class Executor {
             }
         });
 
-//        new Evaluation("http://dbpedia.org/resource/Galle", dataset).process();
-
-//        FileWriter writer = new FileWriter(resultsPath);
-//        dataset.begin(ReadWrite.READ) ;
-//            Model model = dataset.getDefaultModel() ;
-//            final int totalTriples = QueryUtils.getCountAsC(model, TOTAL_TRIPLES);
-//            System.out.println("Totoal triples :" + totalTriples);
-//
-//            model.write(writer, "TURTLE");
-//            writer.flush();
-//            writer.close();
-//        dataset.end();
-
         cacheManager.removeCache("uriCache");
         cacheManager.close();;
+
     }
 
     private static void setPrefixes(Model model) {
@@ -465,7 +479,7 @@ public class Executor {
         String urlFile = "src/main/resources/data/class/Person.txt";
         String resultsFile = "src/main/resources/results/Galle.ttl";
 
-        Executor executor = new Executor(dir, urlFile, resultsFile);
+        Executor executor = new Executor(dir, urlFile);
 
     }
 

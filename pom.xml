@@ -1,82 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <name>Linked Data Sniffer</name>
+  <groupId>es.upm.oeg.tools.quality.ldsniffer</groupId>
+  <artifactId>ld-sniffer</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <url>https://github.com/nandana/ld-sniffer</url>
 
-    <groupId>es.upm.oeg.tools.quality.ldsniffer</groupId>
-    <artifactId>ldsniffer-service</artifactId>
-    <version>0.0.1</version>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.3.RELEASE</version>
-    </parent>
+ <developers>
+<developer>
+	<id>nandana</id>
+	<name>Nandana Mihindukulasooriya</name>
+	<email>nmihindu@fi.upm.es</email>
+	<organization>Ontology Engineering Group, Universidad Politécnica de Madrid</organization>
+</developer>
+ </developers>
 
-    <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-web</artifactId>-->
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>ch.qos.logback</groupId>-->
-                    <!--<artifactId>logback-classic</artifactId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-actuator</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-test</artifactId>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
+  <organization>
+    <name>Ontology Engineering Group</name>
+    <url>www.oeg-upm.net/</url>
+  </organization>  
 
-        <!--Jena libs -->
-        <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>apache-jena-libs</artifactId>
-            <version>${jena.version}</version>
-            <type>pom</type>
-        </dependency>
+  <scm>
+    <connection>scm:git:https://github.com/nandana/ld-sniffer.git</connection>
+    <developerConnection>scm:git:https://github.com/nandana/ld-sniffer.git</developerConnection>
+    <url>https://github.com/nandana/ld-sniffer.git</url>
+    <tag>HEAD</tag>
+  </scm>
 
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>18.0</version>
-        </dependency>
+  <modules>
+      <module>ld-sniffer-core</module>
+      <module>distribution</module>
+  </modules>
 
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${http.client.version}</version>
-        </dependency>
+  <issueManagement>
+    <system>Git</system>
+    <url>https://github.com/nandana/ld-sniffer/issues</url>
+  </issueManagement>
 
-        <!-- EhCache-->
-        <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>${ehcache.version}</version>
-        </dependency>
-
-    </dependencies>
-
-    <properties>
-        <java.version>1.8</java.version>
-        <jena.version>2.12.1</jena.version>
-        <http.client.version>4.5.2</http.client.version>
-        <ehcache.version>3.0.0.rc2</ehcache.version>
-    </properties>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

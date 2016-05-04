@@ -129,29 +129,40 @@ public class Evaluation {
 
             //Add base measures
             addMeasure(model, LDQM.Numberoftriples, totalTriples);
+
             addMeasure(model, LDQM.Numberofdistinctiris, iriSet.size());
-            addMeasure(model, LDQM.Numberofdistinctsubjects, iriSubjects.size());
-            addMeasure(model, LDQM.Numberofdistinctpredicates, iriPredicates.size());
-            addMeasure(model, LDQM.Numberofdistinctobjects, iriObjects.size());
+            if (iriSet.size() > 0) {
 
-            //Add derived measures
-            addMeasure(model, LDQM.Numberofdereferenceableiris, derefIriCount.intValue());
-            addMeasure(model, LDQM.Numberofdereferenceablesubjects, derefIriSubjectCount.intValue());
-            addMeasure(model, LDQM.Numberofdereferenceablepredicates, derefIriPredicateCount.intValue());
-            addMeasure(model, LDQM.Numberofdereferenceableobjects, derefIriObjectCount.intValue());
+                addMeasure(model, LDQM.Numberofdereferenceableiris, derefIriCount.intValue());
+                addMeasure(model, LDQM.Averageiridereferenceability, getPercentage(derefIriCount.intValue(), iriSet.size()));
 
-            //Add indicators
-            addMeasure(model, LDQM.Averageiridereferenceability, getPercentage(derefIriCount.intValue(), iriSet.size()));
-            addMeasure(model, LDQM.Averagesubjectdereferenceability, getPercentage(derefIriSubjectCount.intValue(), iriSubjects.size()));
-            addMeasure(model, LDQM.Averagepredicatedereferenceability, getPercentage(derefIriPredicateCount.intValue(), iriPredicates.size()));
-            addMeasure(model, LDQM.Averageobjectdereferenceability, getPercentage(derefIriObjectCount.intValue(), iriObjects.size()));
+                if (iriSubjects.size() > 0) {
+                    addMeasure(model, LDQM.Numberofdistinctsubjects, iriSubjects.size());
+                    addMeasure(model, LDQM.Numberofdereferenceablesubjects, derefIriSubjectCount.intValue());
+                    addMeasure(model, LDQM.Averagesubjectdereferenceability, getPercentage(derefIriSubjectCount.intValue(), iriSubjects.size()));
 
-            addQualityReport(model);
-
-            for (HttpResponse response: responseMap.values()) {
-                if(!response.isCached()){
-                    addDereferenceabilityMeasure(model, response);
                 }
+
+                if (iriPredicates.size() > 0) {
+                    addMeasure(model, LDQM.Numberofdistinctpredicates, iriPredicates.size());
+                    addMeasure(model, LDQM.Numberofdereferenceablepredicates, derefIriPredicateCount.intValue());
+                    addMeasure(model, LDQM.Averagepredicatedereferenceability, getPercentage(derefIriPredicateCount.intValue(), iriPredicates.size()));
+                }
+
+                if (iriObjects.size() > 0) {
+                    addMeasure(model, LDQM.Numberofdistinctobjects, iriObjects.size());
+                    addMeasure(model, LDQM.Numberofdereferenceableobjects, derefIriObjectCount.intValue());
+                    addMeasure(model, LDQM.Averageobjectdereferenceability, getPercentage(derefIriObjectCount.intValue(), iriObjects.size()));
+                }
+
+                addQualityReport(model);
+
+                for (HttpResponse response: responseMap.values()) {
+                    if(!response.isCached()){
+                        addDereferenceabilityMeasure(model, response);
+                    }
+                }
+
             }
 
             dataset.commit();
@@ -242,7 +253,9 @@ public class Evaluation {
                     errSubject.addLiteral(HTTP.statusCodeValue, response.getStatusCode());
                 }
                 errSubject.addLiteral(HTTP.methodName, response.getMethod());
-                errSubject.addLiteral(HTTP.reasonPhrase, response.getReason());
+                if (response.getReason() != null) {
+                    errSubject.addLiteral(HTTP.reasonPhrase, response.getReason());
+                }
                 noDerefSubjectsProblem.addProperty(QPRO.problematicThing, errSubject);
             }
         }
@@ -347,6 +360,10 @@ public class Evaluation {
 
     private double getPercentage(int count, int total) {
 
+        //This shouldn't be necessary
+        if (total == 0) {
+            return 0;
+        }
         return new BigDecimal(((double) count / total) * 100).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 
     }
