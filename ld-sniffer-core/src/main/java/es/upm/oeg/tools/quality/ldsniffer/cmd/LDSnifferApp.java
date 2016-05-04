@@ -69,6 +69,9 @@ public class LDSnifferApp {
                 System.exit(0);
             }
 
+            logger.info("URL List: " + line.getOptionValue("ul"));
+            logger.info("TDB Path: " + line.getOptionValue("tdb"));
+
             Executor executor = new Executor(line.getOptionValue("tdb"), line.getOptionValue("ul"));
             executor.execute();
 

@@ -223,7 +223,9 @@ public class Evaluation {
         if (response.getStatusCode() > 0) {
             res.addLiteral(HTTP.statusCodeValue, response.getStatusCode());
         }
-        res.addLiteral(HTTP.reasonPhrase, response.getReason());
+        if (response.getReason() != null){
+            res.addLiteral(HTTP.reasonPhrase, response.getReason());
+        }
     }
 
     public Resource addMeasure(Model model, Resource metric, Resource subject) {

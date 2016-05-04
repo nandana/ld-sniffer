@@ -19,6 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -78,9 +79,13 @@ public class Executor {
 
     public void execute() throws IOException {
 
+        Path path = Paths.get(urlListPath);
+
+        logger.info("Path : " + path.toAbsolutePath().toString());
+        logger.info("Path exits : " + Files.exists(path));
+
         List<String> urlList = Files.
-                readAllLines(Paths.get(urlListPath),
-                        Charset.defaultCharset());
+                readAllLines(path, Charset.defaultCharset());
 
         cacheManager
                 = CacheManagerBuilder.newCacheManagerBuilder()
