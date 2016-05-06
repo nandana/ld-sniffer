@@ -1,5 +1,11 @@
 Linked Data Sniffer
 ===================
+[![Build Status](https://travis-ci.org/ldp4j/ldp4j.svg?branch=master)](https://travis-ci.org/ldp4j/ldp4j)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/nandana/ld-sniffer/master/LICENSE)
+[![Java version](https://img.shields.io/badge/java-1.8-green.svg)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+[![GitHub issues](https://img.shields.io/github/issues/nandana/ld-sniffer.svg)](https://github.com/nandana/ld-sniffer/issues)
+[![Maintenance](https://img.shields.io/maintenance/yes/2016.svg?maxAge=2592000?style=plastic)](https://twitter.com/nandanamihindu)
+
 
 Linked Data Sniffer is a command line tool for assessing the accessibility of Linked Data resources according to
 the [metrics defined](http://delicias.dia.fi.upm.es/LDQM/index.php/Accessibility) in the
@@ -9,15 +15,14 @@ the [metrics defined](http://delicias.dia.fi.upm.es/LDQM/index.php/Accessibility
 ## Usage
 
 Download the ld-sniffer-0.0.1.jar and use it as an standalone executable jar.
-
-> usage: LDSnifferApp [-h] -tdb <TDB-DIR-PATH> -ul <URI-FILE-PATH>
-> Assess a list of Linked Data resources using Linked Data Quality Model.
->  -h,--help                       Print this help message
->  -tdb,--tdb <TDB-DIR-PATH>       The path of directory for Jena TDB files
->  -ul,--uriList <URI-FILE-PATH>   The path of the file containing the urls
->                                  of resources to  be assessed
-> Please report issues at https://github.com/nandana/ld-sniffer
-
+```
+  usage: java -jar ld-sniffer-0.0.1.jar [-h] -tdb <TDB-DIR-PATH> -ul <URI-FILE-PATH>
+  Assess a list of Linked Data resources using Linked Data Quality Model.
+   -h,--help                       Print this help message
+   -tdb,--tdb <TDB-DIR-PATH>       The path of directory for Jena TDB files
+   -ul,--uriList <URI-FILE-PATH>   The path of the file containing the urls of resources to  be assessed
+   Please report issues at https://github.com/nandana/ld-sniffer
+```
 
 
 

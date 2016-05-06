@@ -1,0 +1,17 @@
+sudo: false
+language: java
+jdk:
+- oraclejdk8
+
+notifications:
+  email:
+    recipients:
+    - ldp4j-commits@googlegroups.com
+    on_success: change
+    on_failure: always
+    
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+  
+  
