@@ -29,6 +29,8 @@ public class LDSnifferApp {
 
     private static final Options OPTIONS = new Options();
 
+    private static int evaluationTimeout;
+
     private static final Logger logger = LoggerFactory.getLogger(LDSnifferApp.class);
 
     static {
@@ -48,6 +50,15 @@ public class LDSnifferApp {
                 .argName("TDB-DIR-PATH")
                 .required()
                 .build());
+
+        OPTIONS.addOption(Option.builder("t")
+                .longOpt("timeout")
+                .desc("Timeout in minutesfor a single evaluation")
+                .hasArg()
+                .argName("T-MINS")
+                .type(Integer.class)
+                .build());
+
 
         OPTIONS.addOption(Option.builder("h")
                 .longOpt("help")
@@ -69,8 +80,11 @@ public class LDSnifferApp {
                 System.exit(0);
             }
 
+            evaluationTimeout = Integer.parseInt(line.getOptionValue("t", "10"));
+
             logger.info("URL List: " + line.getOptionValue("ul"));
             logger.info("TDB Path: " + line.getOptionValue("tdb"));
+            logger.info("Timeout (mins): " + evaluationTimeout);
 
             Executor executor = new Executor(line.getOptionValue("tdb"), line.getOptionValue("ul"));
             executor.execute();
@@ -87,6 +101,10 @@ public class LDSnifferApp {
             System.exit(1);
         }
 
+    }
+
+    public static int getEvaluationTimeout() {
+        return evaluationTimeout;
     }
 
     protected static CommandLine parseArguments(String[] args) throws ParseException {

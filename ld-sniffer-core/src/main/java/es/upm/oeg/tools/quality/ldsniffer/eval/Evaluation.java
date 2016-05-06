@@ -11,6 +11,7 @@ import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.RDF;
 import es.upm.oeg.tools.quality.ldsniffer.BadRequestException;
 import es.upm.oeg.tools.quality.ldsniffer.ServerError;
+import es.upm.oeg.tools.quality.ldsniffer.cmd.LDSnifferApp;
 import es.upm.oeg.tools.quality.ldsniffer.model.HttpResponse;
 import es.upm.oeg.tools.quality.ldsniffer.query.QueryUtils;
 import es.upm.oeg.tools.quality.ldsniffer.vocab.*;
@@ -157,7 +158,11 @@ public class Evaluation {
 
                 addQualityReport(model);
 
-                for (HttpResponse response: responseMap.values()) {
+                //We create a copy of the map here to avoid ConcurrentModificationException when the executor is timed out
+                //before finishing the evaluation of all URIs and keep adding new ones to the responseMap
+                final Map<String, HttpResponse> responseMapCopy = new HashMap<>(responseMap);
+
+                for (HttpResponse response: responseMapCopy.values()) {
                     if(!response.isCached()){
                         addDereferenceabilityMeasure(model, response);
                     }
@@ -336,7 +341,7 @@ public class Evaluation {
 
         executor.shutdown();
         try {
-            executor.awaitTermination(5, TimeUnit.MINUTES);
+            executor.awaitTermination(LDSnifferApp.getEvaluationTimeout(), TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             throw new ServerError("Interrupted ...");
         }

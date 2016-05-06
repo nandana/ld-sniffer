@@ -101,12 +101,12 @@ public class Executor {
         try {
             Model model = dataset.getDefaultModel();
             setPrefixes(model);
-            addDimensions(model);
-            addScales(model);
-            addTechniques(model);
-            addBaseMeasures(model);
-            addDerivedMeasures(model);
-            addIndicators(model);
+            //addDimensions(model);
+            //addScales(model);
+            //addTechniques(model);
+            //addBaseMeasures(model);
+            //addDerivedMeasures(model);
+            //addIndicators(model);
             dataset.commit();
         } finally {
             dataset.end();
