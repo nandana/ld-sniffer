@@ -1,5 +1,6 @@
 package es.upm.oeg.tools.quality.ldsniffer.eval;
 
+import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.ReadWrite;
@@ -211,22 +212,22 @@ public class Evaluation {
         }
         Resource measure = addMeasure(model, LDQM.IRIdereferenceability, subject);
         if (response.getStatusCode() >= 200 && response.getStatusCode() < 300 ) {
-            measure.addLiteral(DQV.value, true);
-            measure.addLiteral(EVAL.hasLiteralValue, true);
+            measure.addLiteral(DQV.value, model.createTypedLiteral(true, XSDDatatype.XSDboolean));
+            measure.addLiteral(EVAL.hasLiteralValue, model.createTypedLiteral(true, XSDDatatype.XSDboolean));
         } else {
-            measure.addLiteral(DQV.value, false);
-            measure.addLiteral(EVAL.hasLiteralValue, false);
+            measure.addLiteral(DQV.value, model.createTypedLiteral(false, XSDDatatype.XSDboolean));
+            measure.addLiteral(EVAL.hasLiteralValue, model.createTypedLiteral(false, XSDDatatype.XSDboolean));
         }
         Resource request = model.createResource(HTTP.Request);
         measure.addProperty(DCTerms.references, request);
         request.addLiteral(HTTP.methodName, response.getMethod());
         request.addLiteral(HTTP.httpVersion, "1.1");
-        request.addLiteral(DCTerms.date, DATE_FORMAT.format(response.getDate()));
+        request.addLiteral(DCTerms.date, model.createTypedLiteral(DATE_FORMAT.format(response.getDate()),XSDDatatype.XSDdateTime));
 
         Resource res = model.createResource(HTTP.Response);
         request.addProperty(HTTP.resp, res);
         if (response.getStatusCode() > 0) {
-            res.addLiteral(HTTP.statusCodeValue, response.getStatusCode());
+            res.addLiteral(HTTP.statusCodeValue, model.createTypedLiteral(response.getStatusCode(),XSDDatatype.XSDint));
         }
         if (response.getReason() != null){
             res.addLiteral(HTTP.reasonPhrase, response.getReason());
@@ -257,7 +258,7 @@ public class Evaluation {
                 Resource errSubject = model.createResource(LDQM.Defect_UndereferenceableURI);
                 errSubject.addProperty(DCTerms.subject,response.getUri());
                 if (response.getStatusCode() > 0) {
-                    errSubject.addLiteral(HTTP.statusCodeValue, response.getStatusCode());
+                    errSubject.addLiteral(HTTP.statusCodeValue, model.createTypedLiteral(response.getStatusCode(), XSDDatatype.XSDint));
                 }
                 errSubject.addLiteral(HTTP.methodName, response.getMethod());
                 if (response.getReason() != null) {
