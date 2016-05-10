@@ -1,2 +1,0 @@
-select distinct ?s where
-{ ?s a ?class . }
