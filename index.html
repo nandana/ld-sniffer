@@ -237,15 +237,96 @@
     <!-- Introduction -->
     <div class="row">
         <div class="jumbotron">
-         <p> Introduction text ... bla bla bla ..
-
+         <p> This page shows the results of a quality assessment performed using the <a href="http://www.linkeddata.es/ontology/ldq#">Linked Data Quality model (LDQM)</a> and
+             <a href="https://github.com/nandana/ld-sniffer">LD Sniffer</a> tool. The resources evaluated include a subset of DBpedia resources (dbo:Person and dbo:Place instances).
          </p>
         <p>In addition to the analysis shown in this page, you can query further details using the SPARQL endpoint or download the RDF dumps
         from datahub.</p>
         <p class="lead">
+            <a class="btn btn-default btn-lg" href="http://www.linkeddata.es/ontology/ldq#" role="button"><img height="25" src="ontology.png"></a>
             <a class="btn btn-default btn-lg" href="http://nandana.github.io/ld-sniffer/sparql.html" role="button"><img height="30" src="sparql.png"></a>
             <a class="btn btn-default btn-lg" href="https://datahub.io/dataset/ldqm-dbpedia-2016" role="button"><img height="25" src="datahub.png"></a>
         </p>
+        </div>
+    </div>
+
+    <!-- -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <b>Metrics</b>
+                    </h4>
+                    This section shows the metrics used for the assessment. These metrics are grouped into base measures, derived measures, and indicators.
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-inverse">
+                            <tr>
+                                <th>Indicators</th>
+                                <th>Derived Measures</th>
+                                <th>Base Measures</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><a href="http://linkeddata.es/page/resource/ldqm/QualityIndicator/Averageiridereferenceability">
+                                    Average IRI dereferenceability<span class="glyphicon glyphicon-share-alt"></span></a>
+                                </td>
+                                <td><a href="http://linkeddata.es/resource/ldqm/DerivedMeasure/Numberofdereferenceableiris">
+                                    Number of dereferenceable IRIs<span class="glyphicon glyphicon-share-alt"></span></a>
+                                </td>
+                                <td><a href="http://linkeddata.es/resource/ldqm/BaseMeasure/Numberofdistinctiris">
+                                    Number of distinct IRIs<span class="glyphicon glyphicon-share-alt"></span></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a href="http://linkeddata.es/page/resource/ldqm/QualityIndicator/Averagesubjectdereferenceability">
+                                    Average subject dereferenceability<span class="glyphicon glyphicon-share-alt"></span></a>
+                                </td>
+                                <td><a href="http://linkeddata.es/resource/ldqm/DerivedMeasure/Numberofdereferenceablesubjects">
+                                    Number of dereferenceable subjects<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/BaseMeasure/Numberofdistinctsubjects">
+                                    Number of distinct subjects<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> <a href="http://linkeddata.es/page/resource/ldqm/QualityIndicator/Averagepredicatedereferenceability">
+                                    Average predicate dereferenceability<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/DerivedMeasure/Numberofdereferenceablepredicates">
+                                    Number of dereferenceable predicates<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/BaseMeasure/Numberofdistinctpredicates">
+                                    Number of distinct predicates<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> <a href="http://linkeddata.es/page/resource/ldqm/QualityIndicator/Averageobjectdereferenceability">
+                                    Average object dereferenceability<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/DerivedMeasure/Numberofdereferenceableobjects">
+                                    Number of dereferenceable objects<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/BaseMeasure/Numberofdistinctobjects">
+                                    Number of distinct objects<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/BaseMeasure/IRIdereferenceability">
+                                    IRI dereferenceability<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -254,6 +335,9 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <h4>
+                        <b>Statistics</b>
+                    </h4>
                     This section shows the high-level statistics about the evaluation for both dbo:Person and dbo:Place instances.
                 </div>
                 <div class="panel-body">
@@ -286,10 +370,10 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">
-                                                More statistics @
-                                                <a class="btn btn-default btn-lg" role="button"
+                                                Explore more statistics in
+                                                <a class="btn btn-default" role="button"
                                                    href="http://loupe.linkeddata.es/loupe/summary.jsp?dataset=ldqmplace">
-                                                    <img height="25" src="loupe-logo.png">
+                                                    <img height="15" src="loupe-logo.png">
                                                 </a>
                                             </td>
                                         </tr>
@@ -342,11 +426,54 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <b>Average IRI Dereferenciability</b>
+                    </h4>
+                    This section shows the distribution of average IRI dereferenciability of the dbo:Person instances in
+                    the DBpedia dataset.
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Histrogram Dereferenceability (dbo:Person)
+                                </div>
+                                <div class="panel-body">
+                                    <div id="personIriHist" style="width: 100%; height: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Histrogram Dereferenceability (dbo:Place)
+                                </div>
+                                <div class="panel-body">
+                                    <div id="placeIriHist" style="width: 100%; height: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Status codes -->
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <h4>
+                        <b>HTTP Staus Codes</b>
+                    </h4>
                     This section shows the distribution of the erroneous status codes returned by the IRIs contained
                     in the resources (instances of dbo:Person and dbo:Place) in the DBpedia (English, 2015-04) dataset.
                 </div>
@@ -383,6 +510,9 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <h4>
+                        <b>Domains with most errors</b>
+                    </h4>
                     This section shows the top 10 domains that returned errors when dereferencing resources from their
                     domains. Pleae note that some of these errors are due to rate limiting from the servers.
                 </div>
@@ -465,42 +595,6 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    This section shows the distribution of average IRI dereferenciability of the dbo:Person instances in
-                    the DBpedia dataset.
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Histrogram Dereferenceability (dbo:Place)
-                                </div>
-                                <div class="panel-body">
-                                    <div id="personIriHist" style="width: 100%; height: 100%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Histrogram Dereferenceability (dbo:Place)
-                                </div>
-                                <div class="panel-body">
-                                    <div id="placeIriHist" style="width: 100%; height: 100%;"></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
