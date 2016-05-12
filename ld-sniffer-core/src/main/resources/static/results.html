@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Accessibility Results - Analysis</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart', 'line']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'X');
+            //data.addColumn('number', 'IRI');
+            data.addColumn('number', 'Subject');
+            data.addColumn('number', 'Predicate');
+            data.addColumn('number', 'Object');
+
+            data.addRows([[0,51,0,0],
+                [1,0,0,0],
+                [2,0,0,0],
+                [3,0,0,0],
+                [4,0,0,0],
+                [5,1,0,0],
+                [6,0,0,0],
+                [7,0,0,0],
+                [8,1,0,0],
+                [9,1,0,0],
+                [10,2,0,0],
+                [11,2,0,0],
+                [12,4,0,0],
+                [13,6,0,0],
+                [14,7,0,0],
+                [15,4,0,0],
+                [16,12,0,1],
+                [17,4,0,0],
+                [18,3,1,0],
+                [19,1,2,0],
+                [20,23,0,1],
+                [21,14,0,0],
+                [22,10,0,1],
+                [23,10,0,0],
+                [24,1,2,0],
+                [25,56,2,1],
+                [26,5,1,0],
+                [27,9,2,2],
+                [28,8,0,0],
+                [29,4,2,0],
+                [30,38,2,0],
+                [31,4,2,0],
+                [32,2,2,3],
+                [33,191,3,3],
+                [34,0,6,6],
+                [35,8,5,8],
+                [36,25,4,7],
+                [37,95,11,10],
+                [38,11,11,10],
+                [39,3,11,11],
+                [40,72,29,17],
+                [41,13,21,16],
+                [42,89,36,10],
+                [43,7,19,25],
+                [44,86,42,25],
+                [45,19,43,32],
+                [46,15,59,30],
+                [47,6,46,20],
+                [48,4,56,42],
+                [49,1,11,2],
+                [50,733,78,55],
+                [51,2,52,44],
+                [52,6,38,49],
+                [53,13,45,37],
+                [54,23,33,39],
+                [55,42,28,39],
+                [56,9,28,33],
+                [57,291,34,43],
+                [58,11,27,30],
+                [59,0,15,27],
+                [60,432,22,44],
+                [61,7,22,29],
+                [62,112,15,30],
+                [63,24,11,18],
+                [64,9,9,17],
+                [65,2,11,26],
+                [66,962,17,16],
+                [67,2,8,10],
+                [68,7,12,12],
+                [69,13,9,9],
+                [70,16,8,13],
+                [71,158,12,8],
+                [72,27,13,10],
+                [73,10,10,12],
+                [74,1,4,5],
+                [75,2966,16,26],
+                [76,17,12,12],
+                [77,39,17,18],
+                [78,20,23,36],
+                [79,3,23,24],
+                [80,4408,37,87],
+                [81,33,20,71],
+                [82,16,38,217],
+                [83,475,31,190],
+                [84,26,49,368],
+                [85,165,60,691],
+                [86,25,224,947],
+                [87,90,608,1394],
+                [88,89,2700,2187],
+                [89,18,1706,1826],
+                [90,115,3289,4301],
+                [91,53,3843,2803],
+                [92,80,4415,6958],
+                [93,71,8157,5276],
+                [94,62,5112,5836],
+                [95,92,7731,6898],
+                [96,93,5641,3594],
+                [97,109,8056,5509],
+                [98,135,2723,316],
+                [99,84,11,0]]);
+
+            var options = {
+                hAxis: {
+                    title: 'Average Dereferenceability, (0 - 100)%'
+                },
+                vAxis: {
+                    title: '# of Resources'
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('placeIriHist'));
+            chart.draw(data, options);
+
+            var statusCodeDataPerson = google.visualization.arrayToDataTable([
+                ['Status Code', '% of Errors'],
+                ['404 Not Found', 1665],
+                ['500 Internal Server Error', 27114],
+                ['503 Service Unavailable',  28619],
+                ['403 Forbidden', 57],
+                ['406 Not Acceptable',   2],
+                ['410 Gone', 6],
+                ['400 Bad Request', 3],
+                ['401 Unauthorized', 2],
+                ['411 Length Required', 2],
+                ['504 Gateway Timeout', 1],
+                ['Connection erros', 264]
+            ]);
+
+            var statusCodeDataPlace = google.visualization.arrayToDataTable([
+                ['Status Code', '% of Errors'],
+                ['503 Service Unavailable',  28619],
+                ['500 Internal Server Error', 27114],
+                ['404 Not Found', 24279],
+                ['502 Bad Gateway',  10761],
+                ['403 Forbidden', 769],
+                ['400 Bad Request', 58],
+                ['410 Gone', 52],
+                ['406 Not Acceptable',   30],
+                ['416 Requested Range Not Satisfiable',   23],
+                ['401 Unauthorized', 18],
+                ['417 Expectation Failed', 18],
+                ['429 Too Many Requests',	17],
+                ['504 Gateway Timeout',	10],
+                ['300 Multiple Choices',	9],
+                ['501 Not Implemented',	7],
+                ['522 Connection Timed Out',	6],
+                ['415 Unsupported Media Type',	5],
+                ['524 A timeout occurred',	4],
+                ['302 Found',	3],
+                ['405 Method Not Allowed',	2],
+                ['408 Request Timeout',	2],
+                ['598 Network read timeout error',	2],
+                ['451 Unavailable For Legal Reasons',	1],
+                ['523 Origin is unreachable',	1],
+                ['409 Conflict',	1],
+                ['412 Precondition Failed',	1],
+                ['520 Origin Error',	1],
+                ['Connection erros', 264]
+            ]);
+
+            var personOptions = {
+                title: 'Dereferencing Errors',
+                is3D: true,
+                sliceVisibilityThreshold: .000001
+            };
+
+            var placeOptions = {
+                title: 'Dereferencing Errors',
+                is3D: true,
+                sliceVisibilityThreshold: .000001
+            };
+
+            var statusChartPerson = new google.visualization.PieChart(document.getElementById('piechart1'));
+            statusChartPerson.draw(statusCodeDataPerson, personOptions);
+
+            var statusChartPlace = new google.visualization.PieChart(document.getElementById('piechart2'));
+            statusChartPlace.draw(statusCodeDataPlace, placeOptions);
+        }
+
+    </script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">DBpedia Quality Assessment using LDQM</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+
+        </div><!--/.navbar-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+    <!-- Introduction -->
+    <div class="row">
+        <div class="jumbotron">
+         <p> This page shows the results of a quality assessment performed using the <a href="http://www.linkeddata.es/ontology/ldq#">Linked Data Quality model (LDQM)</a> and
+             <a href="https://github.com/nandana/ld-sniffer">LD Sniffer</a> tool. The resources evaluated include a subset of DBpedia resources (dbo:Person and dbo:Place instances).
+         </p>
+        <p>In addition to the analysis shown in this page, you can query further details using the SPARQL endpoint or download the RDF dumps
+        from datahub.</p>
+        <p class="lead">
+            <a class="btn btn-default btn-lg" href="http://www.linkeddata.es/ontology/ldq#" role="button"><img height="25" src="ontology.png"></a>
+            <a class="btn btn-default btn-lg" href="http://nandana.github.io/ld-sniffer/sparql.html" role="button"><img height="30" src="sparql.png"></a>
+            <a class="btn btn-default btn-lg" href="https://datahub.io/dataset/ldqm-dbpedia-2016" role="button"><img height="25" src="datahub.png"></a>
+        </p>
+        </div>
+    </div>
+
+    <!-- -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <b>Metrics</b>
+                    </h4>
+                    This section shows the metrics used for the assessment. These metrics are grouped into base measures, derived measures, and indicators.
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-inverse">
+                            <tr>
+                                <th>Indicators</th>
+                                <th>Derived Measures</th>
+                                <th>Base Measures</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><a href="http://linkeddata.es/page/resource/ldqm/QualityIndicator/Averageiridereferenceability">
+                                    Average IRI dereferenceability<span class="glyphicon glyphicon-share-alt"></span></a>
+                                </td>
+                                <td><a href="http://linkeddata.es/resource/ldqm/DerivedMeasure/Numberofdereferenceableiris">
+                                    Number of dereferenceable IRIs<span class="glyphicon glyphicon-share-alt"></span></a>
+                                </td>
+                                <td><a href="http://linkeddata.es/resource/ldqm/BaseMeasure/Numberofdistinctiris">
+                                    Number of distinct IRIs<span class="glyphicon glyphicon-share-alt"></span></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a href="http://linkeddata.es/page/resource/ldqm/QualityIndicator/Averagesubjectdereferenceability">
+                                    Average subject dereferenceability<span class="glyphicon glyphicon-share-alt"></span></a>
+                                </td>
+                                <td><a href="http://linkeddata.es/resource/ldqm/DerivedMeasure/Numberofdereferenceablesubjects">
+                                    Number of dereferenceable subjects<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/BaseMeasure/Numberofdistinctsubjects">
+                                    Number of distinct subjects<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> <a href="http://linkeddata.es/page/resource/ldqm/QualityIndicator/Averagepredicatedereferenceability">
+                                    Average predicate dereferenceability<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/DerivedMeasure/Numberofdereferenceablepredicates">
+                                    Number of dereferenceable predicates<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/BaseMeasure/Numberofdistinctpredicates">
+                                    Number of distinct predicates<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> <a href="http://linkeddata.es/page/resource/ldqm/QualityIndicator/Averageobjectdereferenceability">
+                                    Average object dereferenceability<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/DerivedMeasure/Numberofdereferenceableobjects">
+                                    Number of dereferenceable objects<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/BaseMeasure/Numberofdistinctobjects">
+                                    Number of distinct objects<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td> <a href="http://linkeddata.es/resource/ldqm/BaseMeasure/IRIdereferenceability">
+                                    IRI dereferenceability<span class="glyphicon glyphicon-share-alt"> </span> </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <b>Statistics</b>
+                    </h4>
+                    This section shows the high-level statistics about the evaluation for both dbo:Person and dbo:Place instances.
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    dbo:Person - Quality Assessment Statistics
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="thead-inverse">
+                                        <tr>
+                                            <th>Key</th>
+                                            <th>Value</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row"># of dbo:Place Instances</th>
+                                            <td>60,308</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"># of Quality Measurements </th>
+                                            <td>1,963,723</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"># of problematic IRIs</th>
+                                            <td>311,946</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                Explore more statistics in
+                                                <a class="btn btn-default" role="button"
+                                                   href="http://loupe.linkeddata.es/loupe/summary.jsp?dataset=ldqmplace">
+                                                    <img height="15" src="loupe-logo.png">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    dbo:Place - Quality Assessment Statistics
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="thead-inverse">
+                                        <tr>
+                                            <th>Key</th>
+                                            <th>Value</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row"># of dbo:Place Instances</th>
+                                            <td>60,308</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"># of Quality Measurements </th>
+                                            <td>1,963,723</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"># of problematic IRIs</th>
+                                            <td>311,946</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <a href="http://loupe.linkeddata.es/loupe/summary.jsp?dataset=ldqmplace">
+                                                    <span class="btn btn-primary">See more in Loupe</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <b>Average IRI Dereferenciability</b>
+                    </h4>
+                    This section shows the distribution of average IRI dereferenciability of the dbo:Person instances in
+                    the DBpedia dataset.
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Histrogram Dereferenceability (dbo:Person)
+                                </div>
+                                <div class="panel-body">
+                                    <div id="personIriHist" style="width: 100%; height: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Histrogram Dereferenceability (dbo:Place)
+                                </div>
+                                <div class="panel-body">
+                                    <div id="placeIriHist" style="width: 100%; height: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status codes -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <b>HTTP Staus Codes</b>
+                    </h4>
+                    This section shows the distribution of the erroneous status codes returned by the IRIs contained
+                    in the resources (instances of dbo:Person and dbo:Place) in the DBpedia (English, 2015-04) dataset.
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    dbo:Person
+                                </div>
+                                <div class="panel-body">
+                                    <div id="piechart1" style="width: 100%; height: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    dbo:Place
+                                </div>
+                                <div class="panel-body">
+                                    <div id="piechart2" style="width: 100%; height: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top erroneous domains -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>
+                        <b>Domains with most errors</b>
+                    </h4>
+                    This section shows the top 10 domains that returned errors when dereferencing resources from their
+                    domains. Pleae note that some of these errors are due to rate limiting from the servers.
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th colspan="2" style="text-align: center">dbo:Person</th>
+                                </tr>
+                                <tr>
+                                    <th>Domain</th>
+                                    <th># of errors</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td># of dbo:Place Instances</td>
+                                    <td>60,308</td>
+                                </tr>
+                                <tr>
+                                    <td># of Quality Measurements </td>
+                                    <td>1,963,723</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th colspan="2" style="text-align: center">dbo:Place</th>
+                                </tr>
+                                <tr>
+                                    <th>Domain</th>
+                                    <th># of errors</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>yago-knowledge.org</td>
+                                    <td>34,734</td>
+                                </tr>
+                                <tr>
+                                    <td>dbpedia.org</td>
+                                    <td>32,302</td>
+                                </tr>
+                                <tr>
+                                    <td>it.dbpedia.org</td>
+                                    <td>11742</td>
+                                </tr>
+                                <tr>
+                                    <td>de.dbpedia.org</td>
+                                    <td>10421</td>
+                                </tr>
+                                <tr>
+                                    <td>inkedgeodata.org</td>
+                                    <td>4446</td>
+                                </tr>
+                                <tr>
+                                    <td>pt.dbpedia.org</td>
+                                    <td>963</td>
+                                </tr>
+                                <tr>
+                                    <td>nl.dbpedia.org</td>
+                                    <td>833</td>
+                                </tr>
+                                <tr>
+                                    <td>gadm.geovocab.org</td>
+                                    <td>785</td>
+                                </tr>
+                                <tr>
+                                    <td>geonames.usgs.gov</td>
+                                    <td>365</td>
+                                </tr>
+                                <tr>
+                                    <td>www.rdfabout.com</td>
+                                    <td>357</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

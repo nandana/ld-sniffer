@@ -1,0 +1,11 @@
+PREFIX dqv: <http://www.w3.org/ns/dqv#>
+PREFIX basemeasure: <http://linkeddata.es/resource/ldqm/BaseMeasure/>
+PREFIX uri4uri: <http://uri4uri.net/vocab#>
+
+select ?host (count(?m) as ?count) where {
+ ?m dqv:isMeasurementOf basemeasure:IRIdereferenceability ;
+    dqv:computedOn ?subject;
+    dqv:value false .
+ ?subject uri4uri:host ?host .
+} group by ?host
+order by desc(?count)

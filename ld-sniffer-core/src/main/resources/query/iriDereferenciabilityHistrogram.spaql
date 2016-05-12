@@ -1,0 +1,10 @@
+PREFIX dqv: <http://www.w3.org/ns/dqv#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+select ?valueInt (count(?value) as ?count) where  {
+  ?m a dqv:QualityMeasurement;
+     dqv:isMeasurementOf ?metric;
+     dqv:value ?value .
+  BIND( xsd:integer(?value) AS ?valueInt )
+} group by ?valueInt
+order by desc(?valueInt)

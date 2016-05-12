@@ -25,7 +25,7 @@
     <![endif]-->
 </head>
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -44,15 +44,21 @@
 </nav>
 
 <div class="container">
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                SPARQL Query:
+    <div class="row" width="100%">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    SPARQL Query:
+                </div>
+                <div class="panel-body">
+                    <div id="yasqe"></div>
+                    <div id="showcase"></div>
+                </div>
             </div>
-            <div class="panel-body">
-                <div id="yasqe"></div>
-                <div id="showcase"></div>
-            </div>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-success btn-lg" onclick="allEvaluationQuery()" >
+                List of all evaluations</button>
         </div>
     </div>
 </div>
@@ -60,6 +66,17 @@
 <script src='https://cdn.jsdelivr.net/yasqe/2.10.0/yasqe.bundled.min.js'></script>
 <script src='https://cdn.jsdelivr.net/yasr/2.7.3/yasr.bundled.min.js'></script>
 <script type="text/javascript">
+
+    var queryAllEvals = "PREFIX ldq: <http://www.linkeddata.es/ontology/ldq#>\n"+
+            "PREFIX qmo: <http://purl.org/net/QualityModel#>\n" +
+            "PREFIX eval: <http://purl.org/net/EvaluationResult#>\n" +
+            "PREFIX measure: <http://linkeddata.es/resource/ldqm/measure/>\n" +
+            "PREFIX dqv: <http://www.w3.org/ns/dqv#>\n" +
+            "PREFIX prov: <http://www.w3.org/ns/prov#>\n" +
+            "SELECT DISTINCT ?resource ?value ?evaluation WHERE {\n"+
+            "  ?measure dqv:isMeasurementOf indicator:Averageiridereferenceability;\n"+
+            "}\n";
+
     var yasr, yasqe = {};
 
     YASQE.defaults.value = "PREFIX ldq: <http://www.linkeddata.es/ontology/ldq#>\n"+
@@ -109,6 +126,11 @@
      */
     yasr.options.getUsedPrefixes = yasqe.getPrefixesFromQuery;
     yasqe.options.sparql.callbacks.complete = yasr.setResponse;
+
+    function allEvaluationQuery() {
+        yasqe.setValue(queryAllEvals);
+
+    }
 
 </script>
 </body>

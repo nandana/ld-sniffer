@@ -5,7 +5,14 @@ import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
@@ -31,6 +38,10 @@ public class LDSnifferApp {
 
     private static int evaluationTimeout;
 
+    private static boolean includeMetricDefinitions = false;
+
+    private static boolean rdfOutput = false;
+
     private static final Logger logger = LoggerFactory.getLogger(LDSnifferApp.class);
 
     static {
@@ -40,7 +51,21 @@ public class LDSnifferApp {
                 .desc("The path of the file containing the urls of resources to  be assessed")
                 .hasArg()
                 .argName("URI-FILE-PATH")
+                .build());
+
+        OPTIONS.addOption(Option.builder("url")
+                .longOpt("url")
+                .desc("URL of the resource to  be assessed")
+                .hasArg()
+                .argName("URL")
                 .required()
+                .build());
+
+        OPTIONS.addOption(Option.builder("ml")
+                .longOpt("metricsList")
+                .desc("The path of the file containing the list of metrics to be calculated")
+                .hasArg()
+                .argName("METRICS-FILE-PATH")
                 .build());
 
         OPTIONS.addOption(Option.builder("tdb")
@@ -48,17 +73,25 @@ public class LDSnifferApp {
                 .desc("The path of directory for Jena TDB files ")
                 .hasArg()
                 .argName("TDB-DIR-PATH")
-                .required()
                 .build());
 
         OPTIONS.addOption(Option.builder("t")
                 .longOpt("timeout")
-                .desc("Timeout in minutesfor a single evaluation")
+                .desc("Timeout (in minutes) for a single evaluation")
                 .hasArg()
                 .argName("T-MINS")
                 .type(Integer.class)
                 .build());
 
+        OPTIONS.addOption(Option.builder("md")
+                .longOpt("metrics-definition")
+                .desc("Include the metric definitions in the results")
+                .build());
+
+        OPTIONS.addOption(Option.builder("rdf")
+                .longOpt("rdf-output")
+                .desc("Output the RDF serialization of the results")
+                .build());
 
         OPTIONS.addOption(Option.builder("h")
                 .longOpt("help")
@@ -81,12 +114,59 @@ public class LDSnifferApp {
             }
 
             evaluationTimeout = Integer.parseInt(line.getOptionValue("t", "10"));
+            if (line.hasOption("md")) {
+                includeMetricDefinitions = true;
+            }
+            if (line.hasOption("rdf")) {
+                rdfOutput = true;
+            }
 
             logger.info("URL List: " + line.getOptionValue("ul"));
             logger.info("TDB Path: " + line.getOptionValue("tdb"));
+            logger.info("Metrics Path: " + line.getOptionValue("ml"));
+            logger.info("Include Metric definitions: " + line.getOptionValue("ml"));
+            logger.info("RDF output: " + line.getOptionValue("rdf"));
             logger.info("Timeout (mins): " + evaluationTimeout);
 
-            Executor executor = new Executor(line.getOptionValue("tdb"), line.getOptionValue("ul"));
+            if (line.hasOption("ml")) {
+                Path path = Paths.get(line.getOptionValue("ml"));
+                if (!Files.exists(path)) {
+                    throw new IOException( path.toAbsolutePath().toString() + " : File doesn't exit.");
+                }
+            }
+
+            //Set the TDB path
+            String tdbDirectory;
+            if (line.hasOption("tdb")) {
+                tdbDirectory = line.getOptionValue("tdb");
+            } else {
+                Path tempPath = Files.createTempDirectory("tdb_");
+                tdbDirectory = tempPath.toAbsolutePath().toString();
+            }
+
+            // Create the URL list for the evaluation
+            if (!line.hasOption("ul") && !line.hasOption("url")) {
+                System.out.println("One of the following parameters are required: url or urlList ");
+                help.printHelp("LDSnifferApp", header, OPTIONS, footer, true);
+                System.exit(0);
+            } else if (line.hasOption("ul") && line.hasOption("url")) {
+                System.out.println("You have to specify either url or urlList, not both.");
+                help.printHelp("LDSnifferApp", header, OPTIONS, footer, true);
+                System.exit(0);
+            }
+
+            List<String> urlList = null;
+            if (line.hasOption("ul")) {
+                Path path = Paths.get(line.getOptionValue("ul"));
+                logger.info("Path : " + path.toAbsolutePath().toString());
+                logger.info("Path exits : " + Files.exists(path));
+                urlList = Files.readAllLines(path, Charset.defaultCharset());
+            } else if (line.hasOption("url")) {
+                urlList = new ArrayList<>();
+                urlList.add(line.getOptionValue("url"));
+            }
+
+            Executor executor = new Executor(tdbDirectory, urlList);
             executor.execute();
 
         } catch (MissingOptionException e) {
@@ -113,6 +193,11 @@ public class LDSnifferApp {
         return parser.parse(OPTIONS, args);
     }
 
+    public static boolean isIncludeMetricDefinitions() {
+        return includeMetricDefinitions;
+    }
 
-
+    public static boolean isRdfOutput() {
+        return rdfOutput;
+    }
 }

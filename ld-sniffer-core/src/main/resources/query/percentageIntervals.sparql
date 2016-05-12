@@ -1,0 +1,8 @@
+PREFIX dqv: <http://www.w3.org/ns/dqv#>
+PREFIX indicator: <http://linkeddata.es/resource/ldqm/QualityIndicator/>
+
+select ?rangeId (count(?value) as ?numMatches) where  {
+  values (?rangeId ?min ?max) { (0 0 10) (0 10 20) (0 20 30) (7 70 80) (8 80 90) (9 90 101) }
+  ?m a dqv:QualityMeasurement; dqv:isMeasurementOf indicator:Averageobjectdereferenceability ; dqv:value ?value .
+  filter (?min <= ?value && ?value < ?max)
+}

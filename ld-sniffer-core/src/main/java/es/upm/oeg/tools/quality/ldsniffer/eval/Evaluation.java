@@ -114,8 +114,28 @@ public class Evaluation {
 
         Date startTime = new Date();
 
-        //calculate the metrics
-        calculateMetrics();
+        try {
+            //calculate the metrics
+            calculateMetrics();
+        } catch (BadRequestException e) {
+            dataset.begin(ReadWrite.WRITE);
+            try {
+                Model model = dataset.getDefaultModel();
+                subject = model.createResource(url);
+                evaluation = model.createResource("http://linkeddata.es/resource/ldqm/evaluation/" + UUID.randomUUID().toString());
+
+                Date endTime = new Date();
+                //Add the evaluation activity
+                addEvaluationActivity(model, startTime, endTime);
+                Resource measure = addMeasure(model, LDQM.IRIdereferenceability, subject);
+                measure.addLiteral(DQV.value, model.createTypedLiteral(true, XSDDatatype.XSDboolean));
+                measure.addLiteral(EVAL.hasLiteralValue, model.createTypedLiteral(true, XSDDatatype.XSDboolean));
+
+                dataset.commit();
+            } finally {
+                dataset.end();
+            }
+        }
 
         Date endTime = new Date();
 
@@ -312,7 +332,8 @@ public class Evaluation {
                         StatusLine statusLine = response.getStatusLine();
                         int statusCode = statusLine.getStatusCode();
                         if (statusCode == HttpStatus.SC_METHOD_NOT_ALLOWED ||
-                                statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+                                statusCode == HttpStatus.SC_INTERNAL_SERVER_ERROR ||
+                                statusCode == HttpStatus.SC_NOT_IMPLEMENTED) {
                             HttpGet get = new HttpGet(iri);
                             method = "GET";
                             try (CloseableHttpResponse getResponse = httpclient.execute(get);) {

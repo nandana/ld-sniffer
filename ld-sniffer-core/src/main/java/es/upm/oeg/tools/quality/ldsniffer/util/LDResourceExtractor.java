@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static es.upm.oeg.tools.quality.ldsniffer.util.SparqlUtils.*;
+
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
  * <p>
@@ -33,12 +35,6 @@ import java.util.Map;
  */
 public class LDResourceExtractor {
 
-    public static final String LITERAL_BINDINGS  = "literal";
-    public static final String IRI_BINDINGS  = "iri";
-
-    public static final String OFFSET_PARAM = "offset";
-
-    public static final String LIMIT_PARAM = "limit";
 
     private static String isntancesQueryPath = "src/main/resources/query/individualsOfClass.sparql";
 
@@ -111,33 +107,6 @@ public class LDResourceExtractor {
         }
     }
 
-    public static String bindQueryString(String queryString, Map<String, Map<String, String>> bindings){
-
-        ParameterizedSparqlString pss = new ParameterizedSparqlString();
-        pss.setCommandText(queryString);
-
-        if (bindings.containsKey(LITERAL_BINDINGS)) {
-            Map<String, String> litBindings = bindings.get(LITERAL_BINDINGS);
-            for(Map.Entry<String, String> binding : litBindings.entrySet()) {
-                String key = binding.getKey();
-                if(OFFSET_PARAM.equals(key) || LIMIT_PARAM.equals(key) ){
-                    pss.setLiteral(key, Integer.parseInt(binding.getValue()));
-                } else {
-                    pss.setLiteral(key, binding.getValue());
-                }
-            }
-        }
-
-        if (bindings.containsKey(IRI_BINDINGS)) {
-            Map<String, String> iriBindings = bindings.get(IRI_BINDINGS);
-            for(Map.Entry<String, String> binding : iriBindings.entrySet()) {
-                pss.setIri(binding.getKey(), binding.getValue());
-            }
-        }
-
-        return pss.toString();
-
-    }
 
     public static String readFile(String path, Charset encoding)
             throws IOException {

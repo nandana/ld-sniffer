@@ -1,0 +1,8 @@
+select distinct ?statusCode (count(?resp) as ?count) where {
+ ?s a <http://www.w3.org/ns/dqv#QualityMeasurement>;
+    <http://www.w3.org/ns/dqv#value> 0 ;
+    <http://purl.org/dc/terms/references> ?http .
+  ?http <http://www.w3.org/2011/http#resp> ?resp .
+  ?resp <http://www.w3.org/2011/http#statusCodeValue> ?statusCode .
+} group by ?statusCode
+order by desc(?count)

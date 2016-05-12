@@ -6,6 +6,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import com.hp.hpl.jena.vocabulary.*;
+import es.upm.oeg.tools.quality.ldsniffer.cmd.LDSnifferApp;
 import es.upm.oeg.tools.quality.ldsniffer.model.HttpResponse;
 import es.upm.oeg.tools.quality.ldsniffer.vocab.*;
 import org.ehcache.Cache;
@@ -53,39 +54,16 @@ public class Executor {
 
     private String tdbDirectory;
 
-    private String urlListPath;
+    private List<String> urlList;
 
-    public Executor(String tdbDirectory, String urlListPath) throws IOException {
+    public Executor(String tdbDirectory, List<String> urlList) throws IOException {
 
         this.tdbDirectory = tdbDirectory;
-        this.urlListPath = urlListPath;
-
-
-//        new Evaluation("http://dbpedia.org/resource/Galle", dataset).process();
-
-//        FileWriter writer = new FileWriter(resultsPath);
-//        dataset.begin(ReadWrite.READ) ;
-//            Model model = dataset.getDefaultModel() ;
-//            final int totalTriples = QueryUtils.getCountAsC(model, TOTAL_TRIPLES);
-//            System.out.println("Totoal triples :" + totalTriples);
-//
-//            model.write(writer, "TURTLE");
-//            writer.flush();
-//            writer.close();
-//        dataset.end();
+        this.urlList = urlList;
 
     }
 
-
     public void execute() throws IOException {
-
-        Path path = Paths.get(urlListPath);
-
-        logger.info("Path : " + path.toAbsolutePath().toString());
-        logger.info("Path exits : " + Files.exists(path));
-
-        List<String> urlList = Files.
-                readAllLines(path, Charset.defaultCharset());
 
         cacheManager
                 = CacheManagerBuilder.newCacheManagerBuilder()
@@ -97,29 +75,54 @@ public class Executor {
         cache = cacheManager.getCache("uriCache", String.class, HttpResponse.class);
 
         Dataset dataset = TDBFactory.createDataset(tdbDirectory) ;
+
+        //Include prefixes
         dataset.begin(ReadWrite.WRITE) ;
         try {
             Model model = dataset.getDefaultModel();
             setPrefixes(model);
-            //addDimensions(model);
-            //addScales(model);
-            //addTechniques(model);
-            //addBaseMeasures(model);
-            //addDerivedMeasures(model);
-            //addIndicators(model);
             dataset.commit();
         } finally {
             dataset.end();
         }
 
+        // If specified, include the metrics
+        if (LDSnifferApp.isIncludeMetricDefinitions()) {
+            dataset.begin(ReadWrite.WRITE) ;
+            try {
+                Model model = dataset.getDefaultModel();
+
+                addDimensions(model);
+                addScales(model);
+                addTechniques(model);
+                addBaseMeasures(model);
+                addDerivedMeasures(model);
+                addIndicators(model);
+
+            } finally {
+                dataset.end();
+            }
+        }
+
+
         urlList.forEach(url -> {
             try {
                 new Evaluation(url, dataset).process();
             } catch (Exception e) {
-                logger.error("Evaluation of '{}' failed with the exception {}" + e.getMessage());
-                e.printStackTrace();
+               logger.error("Evaluation of '{}' failed with the exception {}" + e.getMessage());
+               e.printStackTrace();
             }
         });
+
+        if (LDSnifferApp.isRdfOutput()) {
+            dataset.begin(ReadWrite.READ) ;
+            try {
+                Model model = dataset.getDefaultModel();
+                model.write(System.out, "TURTLE");
+            } finally {
+                dataset.end();
+            }
+        }
 
         cacheManager.removeCache("uriCache");
         cacheManager.close();;
@@ -345,7 +348,7 @@ public class Executor {
 
     private static void addIndicators(Model model) {
 
-        Resource avgDerefIriMetric = model.createResource(LDQM.Averagesubjectdereferenceability.getURI());
+        Resource avgDerefIriMetric = model.createResource(LDQM.Averageiridereferenceability.getURI());
         avgDerefIriMetric.addProperty(RDF.type, QMO.QualityIndicator);
         avgDerefIriMetric.addProperty(RDF.type, QMO.QualityMeasure);
         avgDerefIriMetric.addProperty(RDF.type, DQV.Metric);
@@ -353,16 +356,15 @@ public class Executor {
         avgDerefIriMetric.addProperty(LDQ.hasGranularity, LDQ.Graph);
         avgDerefIriMetric.addProperty(LDQ.hasGranularity, LDQ.Dataset);
         avgDerefIriMetric.addProperty(LDQ.hasAspect, LDQ.LinkedDataServer);
-        avgDerefIriMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdereferenceablesubjects);
-        avgDerefIriMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdistinctsubjects);
-        avgDerefIriMetric.addProperty(DQV.inDimension, LDQM.Dimension_Availability);
-        avgDerefIriMetric.addProperty(QMO.measuresCharacteristic, LDQM.Dimension_Availability);
+        avgDerefIriMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdereferenceableiris);
+        avgDerefIriMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdistinctiris);
+        avgDerefIriMetric.addProperty(DQV.inDimension, LDQM.Dimension_Accessibility);
+        avgDerefIriMetric.addProperty(QMO.measuresCharacteristic, LDQM.Dimension_Accessibility);
         avgDerefIriMetric.addProperty(DC.title, model.createLiteral("Average IRI dereferenceability", "en"));
         avgDerefIriMetric.addLiteral(SKOS.prefLabel, model.createLiteral("Average IRI dereferenceability", "en"));
         avgDerefIriMetric.addProperty(DC.description, model.createLiteral("Average of dereferenceable IRIs in a triple, dataset, or a graph.", "en"));
         avgDerefIriMetric.addProperty(SKOS.definition, "(Number of dereferenceable IRIs/ Number of distinct IRIs) * 100 %");
         avgDerefIriMetric.addProperty(DQV.expectedDataType, XSD.xdouble);
-        avgDerefIriMetric.addProperty(DQV.inDimension, LDQM.Dimension_Accessibility);
 
         Resource avgDerefSubjectsMetric = model.createResource(LDQM.Averagesubjectdereferenceability.getURI());
         avgDerefSubjectsMetric.addProperty(RDF.type, QMO.QualityIndicator);
@@ -374,14 +376,13 @@ public class Executor {
         avgDerefSubjectsMetric.addProperty(LDQ.hasAspect, LDQ.LinkedDataServer);
         avgDerefSubjectsMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdereferenceablesubjects);
         avgDerefSubjectsMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdistinctsubjects);
-        avgDerefSubjectsMetric.addProperty(DQV.inDimension, LDQM.Dimension_Availability);
-        avgDerefSubjectsMetric.addProperty(QMO.measuresCharacteristic, LDQM.Dimension_Availability);
+        avgDerefSubjectsMetric.addProperty(DQV.inDimension, LDQM.Dimension_Accessibility);
+        avgDerefSubjectsMetric.addProperty(QMO.measuresCharacteristic, LDQM.Dimension_Accessibility);
         avgDerefSubjectsMetric.addProperty(DC.title, model.createLiteral("Average IRI subject dereferenceability", "en"));
         avgDerefSubjectsMetric.addLiteral(SKOS.prefLabel, model.createLiteral("Average IRI subject dereferenceability", "en"));
         avgDerefSubjectsMetric.addProperty(DC.description, model.createLiteral("Average of dereferenceable IRI subjects in a triple, dataset, or a graph.", "en"));
         avgDerefSubjectsMetric.addProperty(SKOS.definition, "(Number of dereferenceable IRI subjects / Number of distinct IRI subjects) * 100 %");
         avgDerefSubjectsMetric.addProperty(DQV.expectedDataType, XSD.xdouble);
-        avgDerefSubjectsMetric.addProperty(DQV.inDimension, LDQM.Dimension_Accessibility);
 
         Resource avgDerefPredicateMetric = model.createResource(LDQM.Averagepredicatedereferenceability.getURI());
         avgDerefPredicateMetric.addProperty(RDF.type, QMO.QualityIndicator);
@@ -391,16 +392,15 @@ public class Executor {
         avgDerefPredicateMetric.addProperty(LDQ.hasGranularity, LDQ.Graph);
         avgDerefPredicateMetric.addProperty(LDQ.hasGranularity, LDQ.Dataset);
         avgDerefPredicateMetric.addProperty(LDQ.hasAspect, LDQ.LinkedDataServer);
-        avgDerefPredicateMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdereferenceablesubjects);
-        avgDerefPredicateMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdistinctsubjects);
-        avgDerefPredicateMetric.addProperty(DQV.inDimension, LDQM.Dimension_Availability);
-        avgDerefPredicateMetric.addProperty(QMO.measuresCharacteristic, LDQM.Dimension_Availability);
+        avgDerefPredicateMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdereferenceablepredicates);
+        avgDerefPredicateMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdistinctpredicates);
+        avgDerefPredicateMetric.addProperty(DQV.inDimension, LDQM.Dimension_Accessibility);
+        avgDerefPredicateMetric.addProperty(QMO.measuresCharacteristic, LDQM.Dimension_Accessibility);
         avgDerefPredicateMetric.addProperty(DC.title, model.createLiteral("Average IRI predicate dereferenceability", "en"));
         avgDerefPredicateMetric.addLiteral(SKOS.prefLabel, model.createLiteral("Average IRI predicate dereferenceability", "en"));
         avgDerefPredicateMetric.addProperty(DC.description, model.createLiteral("Average of dereferenceable IRI predicates in a triple, dataset, or a graph.", "en"));
         avgDerefPredicateMetric.addProperty(SKOS.definition, "(Number of dereferenceable IRI predicates / Number of distinct IRI predicates) * 100 %");
         avgDerefPredicateMetric.addProperty(DQV.expectedDataType, XSD.xdouble);
-        avgDerefPredicateMetric.addProperty(DQV.inDimension, LDQM.Dimension_Accessibility);
 
         Resource avgDerefObjectMetric = model.createResource(LDQM.Averageobjectdereferenceability.getURI());
         avgDerefObjectMetric.addProperty(RDF.type, QMO.QualityIndicator);
@@ -410,16 +410,15 @@ public class Executor {
         avgDerefObjectMetric.addProperty(LDQ.hasGranularity, LDQ.Graph);
         avgDerefObjectMetric.addProperty(LDQ.hasGranularity, LDQ.Dataset);
         avgDerefObjectMetric.addProperty(LDQ.hasAspect, LDQ.LinkedDataServer);
-        avgDerefObjectMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdereferenceablesubjects);
-        avgDerefObjectMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdistinctsubjects);
-        avgDerefObjectMetric.addProperty(DQV.inDimension, LDQM.Dimension_Availability);
-        avgDerefObjectMetric.addProperty(QMO.measuresCharacteristic, LDQM.Dimension_Availability);
-        avgDerefObjectMetric.addProperty(DC.title, model.createLiteral("Average IRI predicate dereferenceability", "en"));
-        avgDerefObjectMetric.addLiteral(SKOS.prefLabel, model.createLiteral("Average IRI predicate dereferenceability", "en"));
-        avgDerefObjectMetric.addProperty(DC.description, model.createLiteral("Average of dereferenceable IRI predicates in a triple, dataset, or a graph.", "en"));
-        avgDerefObjectMetric.addProperty(SKOS.definition, "(Number of dereferenceable IRI predicates / Number of distinct IRI predicates) * 100 %");
-        avgDerefObjectMetric.addProperty(DQV.expectedDataType, XSD.xdouble);
+        avgDerefObjectMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdereferenceableobjects);
+        avgDerefObjectMetric.addProperty(PROV.wasDerivedFrom, LDQM.Numberofdistinctobjects);
         avgDerefObjectMetric.addProperty(DQV.inDimension, LDQM.Dimension_Accessibility);
+        avgDerefObjectMetric.addProperty(QMO.measuresCharacteristic, LDQM.Dimension_Accessibility);
+        avgDerefObjectMetric.addProperty(DC.title, model.createLiteral("Average IRI objects dereferenceability", "en"));
+        avgDerefObjectMetric.addLiteral(SKOS.prefLabel, model.createLiteral("Average IRI objects dereferenceability", "en"));
+        avgDerefObjectMetric.addProperty(DC.description, model.createLiteral("Average of dereferenceable IRI objects in a triple, dataset, or a graph.", "en"));
+        avgDerefObjectMetric.addProperty(SKOS.definition, "(Number of dereferenceable IRI objects / Number of distinct IRI objects) * 100 %");
+        avgDerefObjectMetric.addProperty(DQV.expectedDataType, XSD.xdouble);
 
     }
 
@@ -452,9 +451,9 @@ public class Executor {
         ratioScale_0_100.addProperty(QMO.hasRankingFunction, QMO.Ranking_HigherBest);
 
         Resource ratioScale_0 = model.createResource("http://linkeddata.es/resource/ldqm/Scale/countHigherBest");
-        ratioScale_0_100.addProperty(RDF.type, OM.Ratio_scale);
-        ratioScale_0_100.addLiteral(QMO.hasLowerBoundary, 0);
-        ratioScale_0_100.addProperty(QMO.hasRankingFunction, QMO.Ranking_HigherBest);
+        ratioScale_0.addProperty(RDF.type, OM.Ratio_scale);
+        ratioScale_0.addLiteral(QMO.hasLowerBoundary, 0);
+        ratioScale_0.addProperty(QMO.hasRankingFunction, QMO.Ranking_HigherBest);
 
     }
 
@@ -484,7 +483,11 @@ public class Executor {
         String urlFile = "src/main/resources/data/class/Person.txt";
         String resultsFile = "src/main/resources/results/Galle.ttl";
 
-        Executor executor = new Executor(dir, urlFile);
+        Path path = Paths.get(urlFile);
+        List<String> urlList = Files.readAllLines(path, Charset.defaultCharset());
+
+        Executor executor = new Executor(dir, urlList);
+        executor.execute();
 
     }
 
