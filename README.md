@@ -16,13 +16,15 @@ the [metrics defined](http://delicias.dia.fi.upm.es/LDQM/index.php/Accessibility
 
 Download the ld-sniffer-0.0.1.jar and use it as an standalone executable jar.
 ```
-  usage: java -jar ld-sniffer-0.0.1.jar [-h] -tdb <TDB-DIR-PATH> -ul <URI-FILE-PATH>
-  Assess a list of Linked Data resources using Linked Data Quality Model.
-   -h,--help                       Print this help message
-   -tdb,--tdb <TDB-DIR-PATH>       The path of directory for Jena TDB files
-   -ul,--uriList <URI-FILE-PATH>   The path of the file containing the urls of resources to  be assessed
-   Please report issues at https://github.com/nandana/ld-sniffer
+usage: java -jar ld-sniffer-0.0.1.jar [-h] [-md] [-ml <METRICS-FILE-PATH>] [-rdf] [-t <T-MINS>] [-tdb <TDB-DIR-PATH>] [-ul <URI-FILE-PATH>] -url <URL>
+Assess a list of Linked Data resources using Linked Data Quality Model.
+ -h,--help                               Print this help message
+ -md,--metrics-definition                Include the metric definitions in the results
+ -ml,--metricsList <METRICS-FILE-PATH>   The path of the file containing the list of metrics to be calculated
+ -rdf,--rdf-output                       Output the RDF serialization of the results
+ -t,--timeout <T-MINS>                   Timeout (in minutes) for a single evaluation
+ -tdb,--tdb <TDB-DIR-PATH>               The path of directory for Jena TDB files
+ -ul,--uriList <URI-FILE-PATH>           The path of the file containing the urls of resources to be assessed
+ -url,--url <URL>                        URL of the resource to be assessed
+Please report issues at https://github.com/nandana/ld-sniffer
 ```
-
-
-
