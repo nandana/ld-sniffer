@@ -1,0 +1,6 @@
+PREFIX dqv: <http://www.w3.org/ns/dqv#>
+PREFIX basemeasure: <http://linkeddata.es/resource/ldqm/BaseMeasure/>
+
+select (count(?m) as ?count) where {
+ ?m dqv:isMeasurementOf basemeasure:IRIdereferenceability .
+}

@@ -98,7 +98,7 @@ public class Executor {
                 addBaseMeasures(model);
                 addDerivedMeasures(model);
                 addIndicators(model);
-
+                dataset.commit();
             } finally {
                 dataset.end();
             }
