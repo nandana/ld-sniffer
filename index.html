@@ -130,7 +130,7 @@
 
             var options = {
                 hAxis: {
-                    title: 'Average Dereferenceability, (0 - 100)%'
+                    title: 'Average Dereferenceability (rounded to nearest integer) (0 - 100)%'
                 },
                 vAxis: {
                     title: '# of Resources'
@@ -140,20 +140,158 @@
             var chart = new google.visualization.LineChart(document.getElementById('placeIriHist'));
             chart.draw(data, options);
 
+            var personData = new google.visualization.DataTable();
+            personData.addColumn('number', 'X');
+            //data.addColumn('number', 'IRI');
+            personData.addColumn('number', 'Subject');
+            personData.addColumn('number', 'Predicate');
+            personData.addColumn('number', 'Object');
+
+
+            personData.addRows([[0,2,0,0],
+                [1,0,0,0],
+                [2,0,0,0],
+                [3,0,0,0],
+                [4,0,0,0],
+                [5,0,0,0],
+                [6,0,0,0],
+                [7,0,0,0],
+                [8,0,0,0],
+                [9,0,0,0],
+                [10,0,0,0],
+                [11,0,0,0],
+                [12,0,0,0],
+                [13,2,0,0],
+                [14,0,0,0],
+                [15,1,0,0],
+                [16,3,0,0],
+                [17,1,0,0],
+                [18,2,0,0],
+                [19,0,0,0],
+                [20,1,0,0],
+                [21,3,0,0],
+                [22,1,0,0],
+                [23,2,0,0],
+                [24,1,0,0],
+                [25,4,0,0],
+                [26,5,0,0],
+                [27,5,0,0],
+                [28,1,0,0],
+                [29,2,0,0],
+                [30,7,0,0],
+                [31,3,0,0],
+                [32,1,0,0],
+                [33,32,0,0],
+                [34,0,0,0],
+                [35,4,0,0],
+                [36,12,0,0],
+                [37,22,0,0],
+                [38,4,0,1],
+                [39,0,0,0],
+                [40,9,1,0],
+                [41,6,1,0],
+                [42,29,1,0],
+                [43,1,0,0],
+                [44,19,1,0],
+                [45,6,0,0],
+                [46,3,0,1],
+                [47,3,0,0],
+                [48,0,1,0],
+                [49,0,0,0],
+                [50,196,1,0],
+                [51,2,0,0],
+                [52,1,0,0],
+                [53,6,0,1],
+                [54,9,1,1],
+                [55,24,0,0],
+                [56,4,0,1],
+                [57,87,1,1],
+                [58,6,0,0],
+                [59,3,0,0],
+                [60,202,0,1],
+                [61,5,0,0],
+                [62,53,1,0],
+                [63,6,0,1],
+                [64,5,0,1],
+                [65,2,0,1],
+                [66,247,3,0],
+                [67,1,0,0],
+                [68,1,1,0],
+                [69,4,0,0],
+                [70,22,3,0],
+                [71,80,0,1],
+                [72,13,0,2],
+                [73,10,4,0],
+                [74,2,0,1],
+                [75,832,1,2],
+                [76,12,3,7],
+                [77,37,2,2],
+                [78,10,2,3],
+                [79,0,2,2],
+                [80,522,7,19],
+                [81,18,1,9],
+                [82,3,3,10],
+                [83,319,2,26],
+                [84,22,4,32],
+                [85,170,5,33],
+                [86,9,6,62],
+                [87,123,6,76],
+                [88,96,8,155],
+                [89,10,5,221],
+                [90,123,27,475],
+                [91,47,17,773],
+                [92,77,23,1425],
+                [93,53,35,2120],
+                [94,53,45,3207],
+                [95,62,105,4653],
+                [96,63,420,5085],
+                [97,59,2201,8481],
+                [98,41,1574,4055],
+                [99,11,6,27]]);
+
+
+            var personDataOptions = {
+                hAxis: {
+                    title: 'Average Dereferenceability (rounded to nearest integer), (0 - 100)%'
+                },
+                vAxis: {
+                    title: '# of Resources'
+                }
+            };
+
+            var personDataChart = new google.visualization.LineChart(document.getElementById('personIriHist'));
+            personDataChart.draw(personData, personDataOptions);
+
+
+
             var statusCodeDataPerson = google.visualization.arrayToDataTable([
                 ['Status Code', '% of Errors'],
-                ['404 Not Found', 1665],
-                ['500 Internal Server Error', 27114],
-                ['503 Service Unavailable',  28619],
-                ['403 Forbidden', 57],
-                ['406 Not Acceptable',   2],
-                ['410 Gone', 6],
-                ['400 Bad Request', 3],
-                ['401 Unauthorized', 2],
-                ['411 Length Required', 2],
-                ['504 Gateway Timeout', 1],
-                ['Connection erros', 264]
+                ['502 Bad Gateway',  28809],
+                ['404 Not Found', 16209],
+                ['500 Internal Server Error', 13360],
+                ['503 Service Unavailable',  1830],
+                ['403 Forbidden', 829],
+                ['410 Gone', 86],
+                ['400 Bad Request', 47],
+                ['417 Expectation Failed', 27],
+                ['429 Too Many Requests',	26],
+                ['401 Unauthorized', 24],
+                ['504 Gateway Timeout',	23],
+                ['416 Requested Range Not Satisfiable',   16],
+                ['406 Not Acceptable', 9],
+                ['522 Connection Timed Out', 7],
+                ['415 Unsupported Media Type',	3],
+                ['524 A timeout occurred',	3],
+                ['405 Method Not Allowed',	2],
+                ['300 Multiple Choices',	2],
+                ['520 Origin Error',	2],
+                ['408 Request Timeout',	1],
+                ['302 Found',	1],
+                ['402 Payment Required',	1],
+                ['456 - Header Field Not Valid for Resource',	1]
             ]);
+
+
 
             var statusCodeDataPlace = google.visualization.arrayToDataTable([
                 ['Status Code', '% of Errors'],
@@ -237,16 +375,16 @@
     <!-- Introduction -->
     <div class="row">
         <div class="jumbotron">
-         <p> This page shows the results of a quality assessment performed using the <a href="http://www.linkeddata.es/ontology/ldq#">Linked Data Quality model (LDQM)</a> and
-             <a href="https://github.com/nandana/ld-sniffer">LD Sniffer</a> tool. The resources evaluated include a subset of DBpedia resources (dbo:Person and dbo:Place instances).
-         </p>
-        <p>In addition to the analysis shown in this page, you can query further details using the SPARQL endpoint or download the RDF dumps
-        from datahub.</p>
-        <p class="lead">
-            <a class="btn btn-default btn-lg" href="http://www.linkeddata.es/ontology/ldq#" role="button"><img height="25" src="ontology.png"></a>
-            <a class="btn btn-default btn-lg" href="http://nandana.github.io/ld-sniffer/sparql.html" role="button"><img height="30" src="sparql.png"></a>
-            <a class="btn btn-default btn-lg" href="https://datahub.io/dataset/ldqm-dbpedia-2016" role="button"><img height="25" src="datahub.png"></a>
-        </p>
+            <p> This page shows the results of a quality assessment performed using the <a href="http://www.linkeddata.es/ontology/ldq#">Linked Data Quality model (LDQM)</a> and
+                <a href="https://github.com/nandana/ld-sniffer">LD Sniffer</a> tool. The resources evaluated include a subset of DBpedia resources (dbo:Person and dbo:Place instances).
+            </p>
+            <p>In addition to the analysis shown in this page, you can query further details using the SPARQL endpoint or download the RDF dumps
+                from datahub.</p>
+            <p class="lead">
+                <a class="btn btn-default btn-lg" href="http://www.linkeddata.es/ontology/ldq#" role="button"><img height="25" src="ontology.png"></a>
+                <a class="btn btn-default btn-lg" href="http://nandana.github.io/ld-sniffer/sparql.html" role="button"><img height="30" src="sparql.png"></a>
+                <a class="btn btn-default btn-lg" href="https://datahub.io/dataset/ldqm-dbpedia-2016" role="button"><img height="25" src="datahub.png"></a>
+            </p>
         </div>
     </div>
 
@@ -441,7 +579,7 @@
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Histrogram Dereferenceability (dbo:Person)
+                                    Average Dereferenceability (dbo:Person)
                                 </div>
                                 <div class="panel-body">
                                     <div id="personIriHist" style="width: 100%; height: 100%;"></div>
@@ -453,7 +591,7 @@
                         <div class="col-md-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Histrogram Dereferenceability (dbo:Place)
+                                    Average Dereferenceability (dbo:Place)
                                 </div>
                                 <div class="panel-body">
                                     <div id="placeIriHist" style="width: 100%; height: 100%;"></div>
@@ -531,12 +669,44 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td># of dbo:Place Instances</td>
-                                    <td>60,308</td>
+                                    <td>yago-knowledge.org</td>
+                                    <td>29,494</td>
                                 </tr>
                                 <tr>
-                                    <td># of Quality Measurements </td>
-                                    <td>1,963,723</td>
+                                    <td>dbpedia.org</td>
+                                    <td>9,402</td>
+                                </tr>
+                                <tr>
+                                    <td>de.dbpedia.org</td>
+                                    <td>8,486</td>
+                                </tr>
+                                <tr>
+                                    <td>it.dbpedia.org</td>
+                                    <td>5,923</td>
+                                </tr>
+                                <tr>
+                                    <td>pt.dbpedia.org</td>
+                                    <td>510</td>
+                                </tr>
+                                <tr>
+                                    <td>zitgist.com</td>
+                                    <td>230</td>
+                                </tr>
+                                <tr>
+                                    <td>en.wikipedia.org</td>
+                                    <td>209</td>
+                                </tr>
+                                <tr>
+                                    <td>es.dbpedia.org</td>
+                                    <td>197</td>
+                                </tr>
+                                <tr>
+                                    <td>id.dbpedia.org</td>
+                                    <td>149</td>
+                                </tr>
+                                <tr>
+                                    <td>data.nytimes.com</td>
+                                    <td>142</td>
                                 </tr>
                                 </tbody>
                             </table>
