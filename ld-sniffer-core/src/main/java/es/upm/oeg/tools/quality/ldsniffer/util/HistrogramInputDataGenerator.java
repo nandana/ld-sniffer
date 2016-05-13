@@ -121,12 +121,12 @@ public class HistrogramInputDataGenerator {
 
 
         String endpoint = "http://infra2.dia.fi.upm.es:8899/sparql";
-        String iri = "http://linkeddata.es/resource/ldqm/QualityIndicator/Averageiridereferenceability";
+        //String iri = "http://linkeddata.es/resource/ldqm/QualityIndicator/Averageiridereferenceability";
         String subject = "http://linkeddata.es/resource/ldqm/QualityIndicator/Averagesubjectdereferenceability";
         String predicate = "http://linkeddata.es/resource/ldqm/QualityIndicator/Averagepredicatedereferenceability";
         String object = "http://linkeddata.es/resource/ldqm/QualityIndicator/Averageobjectdereferenceability";
 
-        histrogram(endpoint, ImmutableList.of(iri, subject, predicate, object));
+        histrogram(endpoint, ImmutableList.of(subject, predicate, object));
 
     }
 
