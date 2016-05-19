@@ -114,6 +114,7 @@ public class LDSnifferApp {
             }
 
             evaluationTimeout = Integer.parseInt(line.getOptionValue("t", "10"));
+
             if (line.hasOption("md")) {
                 includeMetricDefinitions = true;
             }

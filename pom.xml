@@ -4,7 +4,7 @@
   <name>Linked Data Sniffer</name>
   <groupId>es.upm.oeg.tools.quality.ldsniffer</groupId>
   <artifactId>ld-sniffer</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <packaging>pom</packaging>
   <url>https://github.com/nandana/ld-sniffer</url>
 

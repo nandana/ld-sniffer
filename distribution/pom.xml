@@ -10,7 +10,7 @@
   <parent>
     <groupId>es.upm.oeg.tools.quality.ldsniffer</groupId>
     <artifactId>ld-sniffer</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <relativePath>../</relativePath>
   </parent> 
 
@@ -18,7 +18,7 @@
     <dependency>
     <groupId>es.upm.oeg.tools.quality.ldsniffer</groupId>
     <artifactId>ld-sniffer-core</artifactId>
-      <version>${project.version}</version>
+      <version>0.0.1</version>
     </dependency>
 
     </dependencies>
