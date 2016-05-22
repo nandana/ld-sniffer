@@ -89,10 +89,10 @@
             "PREFIX measure: <http://linkeddata.es/resource/ldqm/measure/>\n" +
             "PREFIX dqv: <http://www.w3.org/ns/dqv#>\n" +
             "PREFIX prov: <http://www.w3.org/ns/prov#>\n" +
-            "SELECT DISTINCT ?resource ?value ?evaluation WHERE {\n"+
+            "SELECT DISTINCT ?resource ?avgIRIDeref WHERE {\n"+
             "  ?measure dqv:isMeasurementOf indicator:Averageiridereferenceability;\n"+
             "    dqv:computedOn ?resource;\n"+
-            "    dqv:value ?value ."+
+            "    dqv:value ?avgIRIDeref  ."+
             "}\n"+
             "LIMIT 10";
 
