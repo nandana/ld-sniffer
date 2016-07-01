@@ -28,3 +28,6 @@ Assess a list of Linked Data resources using Linked Data Quality Model.
  -url,--url <URL>                        URL of the resource to be assessed
 Please report issues at https://github.com/nandana/ld-sniffer
 ```
+
+## Evaluation results
+
