@@ -31,3 +31,5 @@ Please report issues at https://github.com/nandana/ld-sniffer
 
 ## Evaluation results
 
+[Results of accessibility assessment of DBpedia resources](https://datahub.io/dataset/ldqm-dbpedia-2016)
+[Analysis of accessibility assessment of DBpedia resources](http://nandana.github.io/ld-sniffer/)
