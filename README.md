@@ -14,7 +14,7 @@ the [metrics defined](http://delicias.dia.fi.upm.es/LDQM/index.php/Accessibility
 
 ## Usage
 
-Download the ld-sniffer-0.0.1.jar and use it as an standalone executable jar.
+Download the [ld-sniffer-0.0.1.jar](https://github.com/nandana/ld-sniffer/releases/tag/0.0.1) and use it as an standalone executable jar. You will need Java 8 as a prerequesite.
 ```
 usage: java -jar ld-sniffer-0.0.1.jar [-h] [-md] [-ml <METRICS-FILE-PATH>] [-rdf] [-t <T-MINS>] [-tdb <TDB-DIR-PATH>] [-ul <URI-FILE-PATH>] -url <URL>
 Assess a list of Linked Data resources using Linked Data Quality Model.
@@ -28,3 +28,8 @@ Assess a list of Linked Data resources using Linked Data Quality Model.
  -url,--url <URL>                        URL of the resource to be assessed
 Please report issues at https://github.com/nandana/ld-sniffer
 ```
+
+## Evaluation results
+
+[Results of accessibility assessment of DBpedia resources](https://datahub.io/dataset/ldqm-dbpedia-2016)
+[Analysis of accessibility assessment of DBpedia resources](http://nandana.github.io/ld-sniffer/)
