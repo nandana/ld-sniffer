@@ -40,6 +40,7 @@
 
   <modules>
       <module>ld-sniffer-core</module>
+      <module>ld-sniffer-webapp</module>
       <module>distribution</module>
   </modules>
 
