@@ -1,12 +1,22 @@
 package es.upm.oeg.tools.quality.ldsniffer.webapp;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.google.common.base.Preconditions;
+import es.upm.oeg.tools.quality.ldsniffer.cmd.LDSnifferApp;
+import org.apache.commons.validator.routines.UrlValidator;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.Map;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.jena.iri.impl.Specification.schemes;
 
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
@@ -27,25 +37,53 @@ import java.util.Map;
  * @since 1.0.0
  */
 
-@Controller
+@RestController
+@EnableAutoConfiguration
 public class EvalController {
 
-    @Value("${application.message:Hello World}")
-    private String message = "Hello World";
+    final static UrlValidator urlValidator = new UrlValidator(new String[]{"http","https"});
 
-    @GetMapping("/")
-    public String welcome(Map<String, Object> model) {
-        model.put("time", new Date());
-        model.put("message", this.message);
-        return "welcome";
+    @RequestMapping("/eval")
+    public ResponseEntity<String> eval(@RequestParam("uriList") String uriList,
+                                       @RequestParam("metricList") String metricList,
+                                       @RequestParam("metricDef") String metricDef,
+                                       @RequestParam("timeout") String timeout) throws IOException {
+
+        Preconditions.checkNotNull(uriList, "uriList parameter is required and can not be null");
+
+        // Evaluating the URI list
+        String result = LDSnifferApp.eval(parseUriList(uriList), true, 10);
+
+        // Creating the HTTP response
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(new MediaType("text", "turtle"));
+        return new ResponseEntity<String>(result, responseHeaders, HttpStatus.OK);
+
     }
 
-    @RequestMapping("/foo")
-    public String foo(Map<String, Object> model) {
-        throw new RuntimeException("Foo");
+
+    /***
+     * Parse the input of uriList, validate them and create a list of URIs
+     * @param uriListParam
+     * @return
+     */
+    public static List<String> parseUriList(String uriListParam) {
+
+        List<String> uriList = new ArrayList<String>();
+
+        String[] uriArray = uriListParam.split("[\\r\\n]+");
+
+        //validate URIs
+        for (String uri : uriArray) {
+            if(urlValidator.isValid(uri)) {
+                uriList.add(uri);
+            }else {
+                throw new IllegalArgumentException("Invalid URL : " + uri);
+            }
+        }
+
+        return uriList;
+
     }
-
-
-
 
 }

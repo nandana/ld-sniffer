@@ -16,6 +16,7 @@ import org.ehcache.config.builders.CacheManagerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -63,7 +64,7 @@ public class Executor {
 
     }
 
-    public void execute() throws IOException {
+    public String execute() throws IOException {
 
         cacheManager
                 = CacheManagerBuilder.newCacheManagerBuilder()
@@ -114,18 +115,26 @@ public class Executor {
             }
         });
 
+        String output = "RDF output not requested";
+
         if (LDSnifferApp.isRdfOutput()) {
             dataset.begin(ReadWrite.READ) ;
             try {
                 Model model = dataset.getDefaultModel();
-                model.write(System.out, "TURTLE");
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                model.write(baos, "TURTLE");
+                output = new String(baos.toByteArray(), "UTF-8");
+
+                System.out.println(output);
             } finally {
                 dataset.end();
             }
         }
 
         cacheManager.removeCache("uriCache");
-        cacheManager.close();;
+        cacheManager.close();
+
+        return output;
 
     }
 

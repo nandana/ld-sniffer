@@ -58,7 +58,6 @@ public class LDSnifferApp {
                 .desc("URL of the resource to  be assessed")
                 .hasArg()
                 .argName("URL")
-                .required()
                 .build());
 
         OPTIONS.addOption(Option.builder("ml")
@@ -183,6 +182,22 @@ public class LDSnifferApp {
         }
 
     }
+
+    public static String eval(List<String> urlList, boolean includeMetrics, int timeout) throws IOException {
+
+        Path tempPath = Files.createTempDirectory("tdb_");
+        String tdbDirectory = tempPath.toAbsolutePath().toString();
+
+        evaluationTimeout = timeout;
+        includeMetricDefinitions = includeMetrics;
+        rdfOutput = true;
+
+        Executor executor = new Executor(tdbDirectory, urlList);
+        return executor.execute();
+
+    }
+
+
 
     public static int getEvaluationTimeout() {
         return evaluationTimeout;

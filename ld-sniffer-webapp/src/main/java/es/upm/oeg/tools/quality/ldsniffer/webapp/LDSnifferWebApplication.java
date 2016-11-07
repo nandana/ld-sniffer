@@ -1,9 +1,12 @@
 package es.upm.oeg.tools.quality.ldsniffer.webapp;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Copyright 2014-2016 Ontology Engineering Group, Universidad Politécnica de Madrid, Spain
@@ -24,6 +27,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  * @since 1.0.0
  */
 
+
 @SpringBootApplication
 public class LDSnifferWebApplication extends SpringBootServletInitializer {
 
@@ -33,7 +37,9 @@ public class LDSnifferWebApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(LDSnifferWebApplication.class, args);
+        SpringApplication.run(EvalController.class, args);
     }
+
+
 
 }

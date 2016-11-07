@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Linked Data Sniffer - a tool for assessing the accessibility of Linked Data</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,700">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-social.css" />
+
+</head>
+<body>
+
+    <!-- Top menu -->
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Linked Data Sniffer</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="top-navbar-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a class="scroll-link" href="#">LDQM</a></li>
+                    <li><a class="scroll-link" href="#">Paper</a></li>
+                    <li><a class="scroll-link" href="#">Source Code</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Top content -->
+    <div class="top-content">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>Linked Data Sniffer</h1>
+                    <p class="lead">
+                        Linked Data Sniffer is a tool for assessing the accessibility of
+                        Linked Data resources according to the
+                        <a href="http://delicias.dia.fi.upm.es/LDQM/index.php/Accessibility">metrics defined</a>
+                        in the <a href="http://www.linkeddata.es/ontology/ldq#">Linked Data Quality Model</a>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <img src="img/logo.png" style="max-width: 100%; max-height: 100%"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 r-form-1-box wow fadeInUp">
+                    <div class="r-form-1-top">
+                    </div>
+                    <div class="r-form-1-bottom">
+                        <form class="form-horizontal" action="/eval" method="post">
+                            <fieldset>
+
+                                <!-- Textarea -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="uriList">URI List</label>
+                                    <div class="col-md-4">
+                <textarea class="form-control" id="uriList" name="uriList"
+                          rows="5" cols="50"
+                >A list of URIs to be evaluated, one per line.</textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="timeout">Timeout (mins)</label>
+                                    <div class="col-md-2">
+                                        <input id="timeout" name="timeout" type="text" placeholder="5"  width="50" class="form-control input-md"
+                                        style="width: 100%">
+
+                                    </div>
+                                </div>
+
+                                <!-- Multiple Radios (inline) -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="metricDef">Include Metric Definitions </label>
+                                    <div class="col-md-4">
+                                        <label class="radio-inline" for="metricDef-0">
+                                            <input type="radio" name="metricDef" id="metricDef-0" value="Yes" checked="checked">
+                                            Yes
+                                        </label>
+                                        <label class="radio-inline" for="metricDef-1">
+                                            <input type="radio" name="metricDef" id="metricDef-1" value="No">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Textarea -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="metricList">Metrics (Optional)</label>
+                                    <div class="col-md-4">
+                <textarea class="form-control" id="metricList" name="metricList">Metrics to be used in the evaluation.
+By default, all metrics will be included.
+                </textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input id="submit" name="submit" type="submit" class="btn btn-success" value="Evaluate">
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div> <!-- END container -->
+     </div> <!-- END Top Content -->
+
+
+    <!-- Javascript -->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.backstretch.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/retina-1.1.0.min.js"></script>
+    <script src="js/scripts.js"></script>
+
+</body>
+
+</html>
