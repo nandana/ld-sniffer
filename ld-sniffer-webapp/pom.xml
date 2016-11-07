@@ -8,7 +8,9 @@
         <version>1.4.1.RELEASE</version>
     </parent>
 
+    <groupId>es.upm.oeg.tools.quality.ldsniffer</groupId>
     <artifactId>ld-sniffer-webapp</artifactId>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
     <name>Linked Data Sniffer - Web App</name>
 
