@@ -1,10 +1,14 @@
 package es.upm.oeg.tools.quality.ldsniffer.webapp;
 
+import io.undertow.Undertow;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.embedded.undertow.UndertowBuilderCustomizer;
+import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,6 +38,20 @@ public class LDSnifferWebApplication extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(LDSnifferWebApplication.class);
+    }
+
+    @Bean
+    public UndertowEmbeddedServletContainerFactory embeddedServletContainerFactory() {
+        UndertowEmbeddedServletContainerFactory factory = new UndertowEmbeddedServletContainerFactory();
+        factory.addBuilderCustomizers(new UndertowBuilderCustomizer() {
+
+            @Override
+            public void customize(Undertow.Builder builder) {
+                builder.addHttpListener(8080, "0.0.0.0");
+            }
+
+        });
+        return factory;
     }
 
     public static void main(String[] args) throws Exception {
