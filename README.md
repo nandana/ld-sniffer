@@ -7,12 +7,19 @@ Linked Data Sniffer
 [![Maintenance](https://img.shields.io/maintenance/yes/2016.svg?maxAge=2592000?style=plastic)](https://twitter.com/nandanamihindu)
 
 
-Linked Data Sniffer is a command line tool for assessing the accessibility of Linked Data resources according to
+Linked Data Sniffer is a tool for assessing the accessibility of Linked Data resources according to
 the [metrics defined](http://delicias.dia.fi.upm.es/LDQM/index.php/Accessibility) in the
 [Linked Data Quality Model](http://www.linkeddata.es/ontology/ldq#).
 
+Linked Data Sniffer can be used either as a Web App or a command line tool. 
 
-## Usage
+## LD Sniffer Web App
+
+![Web App Screenshot](https://github.com/nandana/ld-sniffer/blob/master/distribution/src/main/resources/ldsniffer.png)
+
+## LD Sniffer Command Line App
+
+### Usage
 
 Download the [ld-sniffer-0.0.1.jar](https://github.com/nandana/ld-sniffer/releases/tag/0.0.1) and use it as an standalone executable jar. You will need Java 8 as a prerequesite.
 ```
@@ -31,5 +38,5 @@ Please report issues at https://github.com/nandana/ld-sniffer
 
 ## Evaluation results
 
-[Results of accessibility assessment of DBpedia resources](https://datahub.io/dataset/ldqm-dbpedia-2016)
-[Analysis of accessibility assessment of DBpedia resources](http://nandana.github.io/ld-sniffer/)
+* [Results of accessibility assessment of DBpedia resources](https://datahub.io/dataset/ldqm-dbpedia-2016)
+* [Analysis of accessibility assessment of DBpedia resources](http://nandana.github.io/ld-sniffer/)
