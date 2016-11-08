@@ -3,6 +3,8 @@ package es.upm.oeg.tools.quality.ldsniffer.webapp;
 import com.google.common.base.Preconditions;
 import es.upm.oeg.tools.quality.ldsniffer.cmd.LDSnifferApp;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,8 @@ import static org.apache.jena.iri.impl.Specification.schemes;
 @EnableAutoConfiguration
 public class EvalController {
 
+    private static final Logger logger = LoggerFactory.getLogger(EvalController.class);
+
     final static UrlValidator urlValidator = new UrlValidator(new String[]{"http","https"});
 
     @RequestMapping("/eval")
@@ -50,6 +54,8 @@ public class EvalController {
                                        @RequestParam("timeout") String timeout) throws IOException {
 
         Preconditions.checkNotNull(uriList, "uriList parameter is required and can not be null");
+
+        logger.info("uriList value : \n'{}'", uriList);
 
         // Evaluating the URI list
         String result = LDSnifferApp.eval(parseUriList(uriList), true, 10);
@@ -75,6 +81,11 @@ public class EvalController {
 
         //validate URIs
         for (String uri : uriArray) {
+
+            //check for empty string and spaces
+            if (uri.trim().length() == 0) {
+                continue;
+            }
             if(urlValidator.isValid(uri)) {
                 uriList.add(uri);
             }else {

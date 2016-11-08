@@ -70,10 +70,13 @@
                                 <!-- Textarea -->
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="uriList">URI List</label>
-                                    <div class="col-md-4">
+                                       <div class="col-md-4">
                 <textarea class="form-control" id="uriList" name="uriList"
                           rows="5" cols="50"
-                >A list of URIs to be evaluated, one per line.</textarea>
+                >http://dbpedia.org/resource/Sigiriya
+http://dbpedia.org/resource/Yakkala
+                </textarea>
+                                       <span class="help-block">A list of URIs to be evaluated, one per line.</span>
                                     </div>
                                 </div>
 
@@ -81,8 +84,10 @@
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="timeout">Timeout (mins)</label>
                                     <div class="col-md-2">
-                                        <input id="timeout" name="timeout" type="text" placeholder="5"  width="50" class="form-control input-md"
+                                        <input id="timeout" name="timeout" type="text"
+                                               value="10"  size="50" class="form-control input-md"
                                         style="width: 100%">
+                                        <span class="help-block">Timeout in minutes as an integer.</span>
 
                                     </div>
                                 </div>
@@ -106,9 +111,10 @@
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for="metricList">Metrics (Optional)</label>
                                     <div class="col-md-4">
-                <textarea class="form-control" id="metricList" name="metricList">Metrics to be used in the evaluation.
-By default, all metrics will be included.
+                <textarea class="form-control" id="metricList" name="metricList">
                 </textarea>
+                                        <span class="help-block">Metrics to be used in the evaluation.
+By default, all metrics will be included.</span>
                                     </div>
                                 </div>
 
