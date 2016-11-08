@@ -17,6 +17,8 @@ Linked Data Sniffer can be used either as a Web App or a command line tool.
 
 ![Web App Screenshot](https://github.com/nandana/ld-sniffer/blob/master/distribution/src/main/resources/ldsniffer.png)
 
+Thanks [Idafen](https://github.com/idafensp) for the logo! 
+
 ## LD Sniffer Docker Image
 
 The LD Sniffer Web App is also available as a Docker image [(nandana/ld-sniffer)](https://hub.docker.com/r/nandana/ld-sniffer/) in Docker hub. 
